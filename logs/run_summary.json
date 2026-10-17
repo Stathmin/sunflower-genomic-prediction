@@ -1,0 +1,102 @@
+{
+ "01_hybrid_blups_biometry.py": {
+  "cmd": "01_hybrid_blups_biometry.py",
+  "status": "ok",
+  "seconds": 13
+ },
+ "02_line_heritability.py": {
+  "cmd": "02_line_heritability.py",
+  "status": "ok",
+  "seconds": 86
+ },
+ "03_variance_components.py": {
+  "cmd": "03_variance_components.py",
+  "status": "ok",
+  "seconds": 348
+ },
+ "04_baker_ratio_intervals.py": {
+  "cmd": "04_baker_ratio_intervals.py",
+  "status": "ok",
+  "seconds": 1348
+ },
+ "06_gca_prediction.py": {
+  "cmd": "06_gca_prediction.py",
+  "status": "ok",
+  "seconds": 12
+ },
+ "07_prediction_within_tester.py": {
+  "cmd": "07_prediction_within_tester.py",
+  "status": "ok",
+  "seconds": 14
+ },
+ "08_prediction_leave_one_line_out.py": {
+  "cmd": "08_prediction_leave_one_line_out.py",
+  "status": "ok",
+  "seconds": 24
+ },
+ "09_parental_distance.py": {
+  "cmd": "09_parental_distance.py",
+  "status": "ok",
+  "seconds": 13
+ },
+ "10_lines_gwas_panels.py": {
+  "cmd": "10_lines_gwas_panels.py",
+  "status": "ok",
+  "seconds": 156
+ },
+ "11_lines_gwas.py": {
+  "cmd": "11_lines_gwas.py",
+  "status": "ok",
+  "seconds": 68
+ },
+ "12_use_type_artefact.py": {
+  "cmd": "12_use_type_artefact.py",
+  "status": "ok",
+  "seconds": 800
+ },
+ "13_use_type_artefact_pc.py": {
+  "cmd": "13_use_type_artefact_pc.py",
+  "status": "ok",
+  "seconds": 796
+ },
+ "14_dominance_scan.py": {
+  "cmd": "14_dominance_scan.py",
+  "status": "ok",
+  "seconds": 1047
+ },
+ "14_dominance_scan.py --trait plant_height --phenotypes hybrid_blup_phenotypes_with_biometry.csv": {
+  "cmd": "14_dominance_scan.py --trait plant_height --phenotypes hybrid_blup_phenotypes_with_biometry.csv",
+  "status": "ok",
+  "seconds": 1271
+ },
+ "14_dominance_scan.py --trait head_diameter --phenotypes hybrid_blup_phenotypes_with_biometry.csv": {
+  "cmd": "14_dominance_scan.py --trait head_diameter --phenotypes hybrid_blup_phenotypes_with_biometry.csv",
+  "status": "ok",
+  "seconds": 1279
+ },
+ "15_dominance_scan_no_imputation.py": {
+  "cmd": "15_dominance_scan_no_imputation.py",
+  "status": "ok",
+  "seconds": 285
+ },
+ "16_power_and_hybrid_lambda.py": {
+  "cmd": "16_power_and_hybrid_lambda.py",
+  "status": "ok",
+  "seconds": 39
+ },
+ "05_without_confectionery_lines.py": {
+  "cmd": "05_without_confectionery_lines.py",
+  "status": "ok",
+  "seconds": 2273
+ },
+ "17_figures.py": {
+  "cmd": "17_figures.py",
+  "status": "ok",
+  "seconds": 15
+ },
+ "18_chr14_ld.py": {
+  "cmd": "18_chr14_ld.py",
+  "status": "ok",
+  "seconds": 2
+ }
+}

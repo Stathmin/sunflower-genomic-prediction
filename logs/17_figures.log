@@ -1,0 +1,4 @@
+checks passed; figures: ['Figure1.png', 'Figure1.tiff', 'Figure2.png', 'Figure2.tiff', 'Figure3.png', 'Figure3.tiff', 'Figure4.png', 'Figure4.tiff']
+SNPs in scan: 67829
+scripts/17_figures.py:97: RuntimeWarning: Mean of empty slice
+  cr = np.mean(~np.isnan(X), 1); af = np.nanmean(X, 1) / 2

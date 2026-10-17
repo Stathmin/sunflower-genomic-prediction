@@ -1,0 +1,42 @@
+
+1. HERITABILITY AND REPEATABILITY (plot-level mixed model)
+  H² of the combination mean — oil_content             text=     0.9  calc=0.8951  ✓
+  H² of the combination mean — seed_weight_1000        text=    0.91  calc=0.9104  ✓
+  H² of the combination mean — seed_yield              text=    0.43  calc=0.4266  ✓
+  plot repeatability — seed yield                      text=    0.16  calc=0.1635  ✓
+
+2. BAKER'S RATIO (plot-level mixed model; year-means table — robustness check on a different source)
+  baker seed_yield (plot-level)                        text=    0.44  calc=0.4389  ✓
+  baker seed_yield (year-means table, robustness)      text=   0.716  calc=0.7294  ✓
+  baker oil_content (plot-level)                       text=   0.958  calc=0.9560  ✓
+  baker oil_content (year-means table, robustness)     text=   0.936  calc=0.9389  ✓
+  baker seed_weight_1000 (plot-level)                  text=   0.951  calc=0.9520  ✓
+  baker seed_weight_1000 (year-means table, robustness) text=   0.936  calc=0.9398  ✓
+
+3. MATERNAL-LINE GCA
+  GCA VK101A — oil_content                             text=     1.2  calc=1.1971  ✓
+  GCA VK934A — seed_weight_1000                        text=    10.9  calc=10.9173  ✓
+  GCA VK934A — plant_height                            text=     8.4  calc=8.4306  ✓
+
+4. POWER ANALYSIS (Visscher NCP, alpha=5e-8)
+  detectable PVE at n=54 and 80% power                 text=    42.0  calc=42.3083  ✓
+  n for 80% power at PVE 15 %                          text=     225  calc=224.4056  ✓
+  n for 80% power at PVE 10 %                          text=     355  calc=356.4089  ✓
+  n for 80% power at PVE 5 %                           text=     750  calc=752.4188  ✓
+
+5. HYBRID EMMAX (λ and significant SNPs)
+  hybrid EMMAX λ (mothers)                             text=    None  calc=1.0259
+  significant SNP at 5e-8, hybrids (mothers)           text=       0  calc=0.0000  ✓
+  hybrid EMMAX λ (mothers_plus_3PC)                    text=    None  calc=1.0671
+  significant SNP at 5e-8, hybrids (mothers_plus_3PC)  text=       0  calc=0.0000  ✓
+
+6. GENOMIC-SELECTION ACCURACY (check against the stored table)
+  GS accuracy — seed_weight_1000                       text=    0.84  calc=0.8370  ✓
+  GS accuracy — oil_content                            text=    0.65  calc=0.6540  ✓
+  GS accuracy — oil_yield                              text=    0.35  calc=0.3500  ✓
+  GS accuracy — seed_yield                             text=    0.29  calc=0.2900  ✓
+
+======================================================================
+checks: 25;  matched: 23;  mismatches: 0;  informational (no claimed value): 2
+
+Saved: reported_numbers_check.csv

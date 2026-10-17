@@ -1,0 +1,8 @@
+# H2_of_combination_mean and ceiling_sqrt_H2: plot-level mixed model on the 156 hybrids of the oilseed lines (without_confectionery_lines.csv).
+# GS_accuracy_CV1 and h2_GBLUP: GBLUP of single hybrids, 5-fold cross-validation by paternal line (reproduced by scripts 07 and 08 as a control).
+# 8 October 2026: all traits on the 156 hybrids of the 52 oilseed lines; seed_yield and oil_yield recomputed by scripts 07 and 08 (h2_GBLUP not recomputed for them).
+trait,GS_accuracy_CV1,h2_GBLUP,H2_of_combination_mean,ceiling_sqrt_H2,n
+seed_yield,0.29,,0.437,0.661,156
+oil_content,0.654,0.782,0.721,0.849,156
+seed_weight_1000,0.837,0.806,0.827,0.909,156
+oil_yield,0.35,,,,156

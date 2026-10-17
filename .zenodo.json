@@ -1,0 +1,74 @@
+{
+ "title": "How Many Paternal Lines Are Enough? Genomic Prediction of Combining Ability in a Sunflower Breeding Panel — data and code",
+ "upload_type": "dataset",
+ "creators": [
+  {
+   "name": "Divashuk, Mikhail",
+   "affiliation": "All-Russia Research Institute of Agricultural Biotechnology, Moscow, Russia"
+  },
+  {
+   "name": "Borisenko, Oksana",
+   "affiliation": "V.S. Pustovoit All-Russian Research Institute of Oil Crops, Krasnodar, Russia"
+  },
+  {
+   "name": "Voronezhskaya, Viktoria",
+   "affiliation": "All-Russia Research Institute of Agricultural Biotechnology, Moscow, Russia"
+  },
+  {
+   "name": "Ryabovol, Igor",
+   "affiliation": "V.S. Pustovoit All-Russian Research Institute of Oil Crops, Krasnodar, Russia"
+  },
+  {
+   "name": "Savchenko, Valentina",
+   "affiliation": "V.S. Pustovoit All-Russian Research Institute of Oil Crops, Krasnodar, Russia"
+  },
+  {
+   "name": "Meglitskaya, Yana",
+   "affiliation": "All-Russia Research Institute of Agricultural Biotechnology, Moscow, Russia"
+  },
+  {
+   "name": "Ryzhenko, Elena",
+   "affiliation": "V.S. Pustovoit All-Russian Research Institute of Oil Crops, Krasnodar, Russia"
+  },
+  {
+   "name": "Savichenko, Dmitrii",
+   "affiliation": "V.S. Pustovoit All-Russian Research Institute of Oil Crops, Krasnodar, Russia"
+  },
+  {
+   "name": "Klimushina, Marina",
+   "affiliation": "All-Russia Research Institute of Agricultural Biotechnology, Moscow, Russia"
+  },
+  {
+   "name": "Gorbachenko, Oleg",
+   "affiliation": "Don Experimental Station, V.S. Pustovoit All-Russian Research Institute of Oil Crops, Rostov region, Russia"
+  },
+  {
+   "name": "Frolov, Sergei",
+   "affiliation": "Armavir Experimental Station, V.S. Pustovoit All-Russian Research Institute of Oil Crops, Krasnodar region, Russia"
+  },
+  {
+   "name": "Karlov, Gennady I.",
+   "affiliation": "All-Russia Research Institute of Agricultural Biotechnology, Moscow, Russia"
+  },
+  {
+   "name": "Toshchakov, Stepan",
+   "affiliation": "National Research Centre \"Kurchatov Institute\", Moscow, Russia"
+  },
+  {
+   "name": "Avdeev, Sergey",
+   "affiliation": "All-Russia Research Institute of Agricultural Biotechnology, Moscow, Russia"
+  }
+ ],
+ "description": "Genotype call sets, phenotypes, analysis scripts and their outputs for the article \"How Many Paternal Lines Are Enough? Genomic Prediction of Combining Ability in a Sunflower Breeding Panel\" (Divashuk, Borisenko et al., submitted to Genes, MDPI). 54 paternal sunflower lines and three CMS testers genotyped by GBS; 162 hybrids phenotyped in 2022–2023. GBLUP prediction of paternal GCA, parental genetic distance, additive and dominance-deviation association scans. See README.md for the layout and the mapping of scripts to tables and figures.",
+ "license": "mit",
+ "keywords": [
+  "sunflower",
+  "Helianthus annuus",
+  "genomic selection",
+  "GBLUP",
+  "general combining ability",
+  "testcross",
+  "genotyping-by-sequencing",
+  "dominance"
+ ]
+}

@@ -1,0 +1,24 @@
+### seed_yield: n=963 plots, 162 combinations, r=3.000
+    Baker's ratio = 0.4395 +- 0.3057   (moments 0.4389)
+    shares: Line   4.6 %  Tester×Line  11.7 %  Year×Line  17.5 %  Year×Tester×Line   6.8 %  error  59.4 %
+    plot repeatability = 0.1634;  H² of combination mean = 0.4258
+
+### oil_content: n=957 plots, 162 combinations, r=2.981
+    Baker's ratio = 0.9577 +- 0.0164   (moments 0.9560)
+    shares: Line  59.3 %  Tester×Line   5.2 %  Year×Line   2.5 %  Year×Tester×Line   1.4 %  error  31.7 %
+    plot repeatability = 0.6449;  H² of combination mean = 0.8991
+
+### seed_weight_1000: n=962 plots, 162 combinations, r=2.997
+    Baker's ratio = 0.9511 +- 0.0178   (moments 0.9520)
+    shares: Line  64.7 %  Tester×Line   6.6 %  Year×Line   0.3 %  Year×Tester×Line   6.2 %  error  22.2 %
+    plot repeatability = 0.7133;  H² of combination mean = 0.9113
+
+### plant_height: n=806 plots, 162 combinations, r=2.503
+    Baker's ratio = 0.9328 +- 0.0294   (moments 0.9264)
+    shares: Line  47.5 %  Tester×Line   6.8 %  Year×Line   5.3 %  Year×Tester×Line   5.2 %  error  35.3 %
+    plot repeatability = 0.5430;  H² of combination mean = 0.8158
+
+### head_diameter: n=804 plots, 162 combinations, r=2.497
+    Baker's ratio = 0.8013 +- 0.1666   (moments 0.8265)
+    shares: Line  10.3 %  Tester×Line   5.1 %  Year×Line   7.5 %  Year×Tester×Line  10.2 %  error  66.9 %
+    plot repeatability = 0.1545;  H² of combination mean = 0.4100

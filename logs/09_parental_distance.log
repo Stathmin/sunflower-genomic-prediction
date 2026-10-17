@@ -1,0 +1,47 @@
+scripts/09_parental_distance.py:41: RuntimeWarning: Mean of empty slice
+  cr = np.mean(~np.isnan(G), 1); af = np.nanmean(G, 1) / 2; maf = np.minimum(af, 1 - af)
+hybrid means from plot-level data: 162
+in plot-level data but not in the summary: [('VA761A', 'LI26'), ('VK101A', 'LI37'), ('VK934A', 'LI20')]
+distance panel: 82889 SNP
+
+--- distance x seed yield, n = 162 (plot-level means) ---
+  ALL      n=162  r=0.3076  p=0.00007   (rounded r=0.308, p=0.0001)
+  VK934A   n= 54  r=0.5099  p=0.00008   (rounded r=0.510, p=0.0001)
+  VK101A   n= 54  r=0.2846  p=0.03700   (rounded r=0.285, p=0.0370)
+  VA761A   n= 54  r=0.2496  p=0.06876   (rounded r=0.250, p=0.0688)
+
+--- distance x seed yield, n = 159 (summary-table combinations only) ---
+  ALL      n=159  r=0.2899  p=0.00021   (rounded r=0.290, p=0.0002)
+  VK934A   n= 53  r=0.4752  p=0.00032   (rounded r=0.475, p=0.0003)
+  VK101A   n= 53  r=0.2751  p=0.04618   (rounded r=0.275, p=0.0462)
+  VA761A   n= 53  r=0.2513  p=0.06949   (rounded r=0.251, p=0.0695)
+
+--- distance x seed yield, n = 159, values from the delivered year-means table ---
+  ALL      n=159  r=0.2898  p=0.00021   (rounded r=0.290, p=0.0002)
+  VK934A   n= 53  r=0.4752  p=0.00032   (rounded r=0.475, p=0.0003)
+  VK101A   n= 53  r=0.2751  p=0.04618   (rounded r=0.275, p=0.0462)
+  VA761A   n= 53  r=0.2513  p=0.06949   (rounded r=0.251, p=0.0695)
+
+--- distance x seed yield allowing for dependence among hybrids (162 hybrids) ---
+  mixed model, tester fixed, paternal line random: slope per SD of distance = +0.1357 t/ha, SE 0.0351, p = 1.13e-04
+  paternal-line means over the three testers (n = 54, independent units): r = 0.458, p = 0.0005
+  within paternal line and tester (fixed line and tester effects): slope = +0.0899, p = 0.065
+
+--- Baker ratio ---
+  seed_yield   162=0.7102 (0.71)  159-subset=0.7164 (0.72)  summary-159=0.7164 (0.72)
+  oil_content  162=0.9424 (0.94)  159-subset=0.9408 (0.94)  summary-159=0.9356 (0.94)
+  seed_weight_1000 162=0.9385 (0.94)  159-subset=0.9359 (0.94)  summary-159=0.9383 (0.94)
+
+--- GCA source ---
+  seed_yield       corr(stored, 162)=0.992041 | corr(stored, summary-159)=1.000000 | max|diff| vs 162 = 0.2449 | vs summary = 0.0000
+  oil_content      corr(stored, 162)=0.991655 | corr(stored, summary-159)=1.000000 | max|diff| vs 162 = 1.2992 | vs summary = 0.0000
+  seed_weight_1000 corr(stored, 162)=0.992313 | corr(stored, summary-159)=1.000000 | max|diff| vs 162 = 6.0722 | vs summary = 0.0000
+
+  maternal GCA, stored:
+mother_long  seed_yield  oil_content  seed_weight_1000  plant_height
+     VK101A   -0.005899     1.197065         -5.792138      1.740171
+     VA761A    0.064598    -0.889099         -5.125157    -10.170721
+     VK934A   -0.058699    -0.307966         10.917296      8.430551
+  seed_yield       162: VA761A=+0.0616, VK101A=-0.0089, VK934A=-0.0527 | summary-159: VA761A=+0.0646, VK101A=-0.0059, VK934A=-0.0587
+  oil_content      162: VA761A=-0.9217, VK101A=+1.1814, VK934A=-0.2596 | summary-159: VA761A=-0.8891, VK101A=+1.1971, VK934A=-0.3080
+  seed_weight_1000 162: VA761A=-5.0463, VK101A=-5.7098, VK934A=+10.7561 | summary-159: VA761A=-5.1252, VK101A=-5.7921, VK934A=+10.9173

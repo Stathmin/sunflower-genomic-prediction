@@ -1,0 +1,14 @@
+empirical 5% threshold 5.54e-06; SNPs below it: 4 (chr14:169,211,003-169,211,163)
+lines with all 4 SNPs called: 53 of 54
+pairwise r^2:
+                 chr14:169211003  chr14:169211066  chr14:169211101  chr14:169211163
+chr14:169211003              1.0              1.0              1.0              1.0
+chr14:169211066              1.0              1.0              1.0              1.0
+chr14:169211101              1.0              1.0              1.0              1.0
+chr14:169211163              1.0              1.0              1.0              1.0
+genotype patterns over the lines (0/2 = homozygous, NaN = missing):
+chr14:169211003  chr14:169211066  chr14:169211101  chr14:169211163
+0.0              0.0              0.0              0.0                40
+2.0              2.0              2.0              2.0                13
+NaN              NaN              NaN              NaN                 1
+Written: chr14_locus_ld.csv

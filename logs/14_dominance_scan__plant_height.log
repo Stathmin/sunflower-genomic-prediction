@@ -1,0 +1,32 @@
+Panel 82,889 SNP; n=156; testable 80,554
+REML on real data: Ka fraction=0.849, Kd=0.079, residual=0.072
+scan in 3.1 s;  lambda=1.30;  tested 67,829
+BEST: chr9:181107363  p_dom=6.519e-06  beta=-6.679
+   chr 9: 181107363  p=6.52e-06  beta=-6.68
+   chr 9: 181119720  p=6.05e-05  beta=-3.14
+   chr 9: 181117551  p=6.56e-05  beta=-3.04
+   chr 1: 111653986  p=1.12e-04  beta=+198.59
+   chr 3: 157536264  p=1.27e-04  beta=-69.66
+   chr 3: 157536258  p=1.27e-04  beta=-69.66
+   chr10:  43902286  p=1.53e-04  beta=+17.72
+   chr 1: 111654081  p=1.65e-04  beta=+247.14
+
+null model: b=[165.35  -8.48   5.09], s2=170.10
+  [bootstrap] 100/500 (164 s) thr5%=9.55e-06
+  [bootstrap] 200/500 (285 s) thr5%=6.96e-06
+  [bootstrap] 300/500 (422 s) thr5%=6.90e-06
+  [bootstrap] 400/500 (537 s) thr5%=6.28e-06
+  [bootstrap] 500/500 (672 s) thr5%=6.26e-06
+  [permutation] 100/500 (141 s) thr5%=4.53e-06
+  [permutation] 200/500 (247 s) thr5%=4.51e-06
+  [permutation] 300/500 (357 s) thr5%=3.74e-06
+  [permutation] 400/500 (469 s) thr5%=3.86e-06
+  [permutation] 500/500 (585 s) thr5%=3.86e-06
+
+========================================================================
+RESULT chr14 (Ka+Kd model with mother effects, 500 replicates, plant_height)
+  observed best p_dom = 6.519e-06 @ chr9:181107363
+  [bootstrap  ] thr5%=6.26e-06  thr1%=2.68e-06  genome-wide p=0.0579  -> NOT SIGNIFICANT
+  [permutation] thr5%=3.86e-06  thr1%=7.16e-07  genome-wide p=0.0758  -> NOT SIGNIFICANT
+
+Saved: dominance_scan_plant_height.csv, dominance_null_bootstrap_plant_height.csv, dominance_null_permutation_plant_height.csv

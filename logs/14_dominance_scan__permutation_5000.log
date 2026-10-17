@@ -1,0 +1,71 @@
+Panel 82,889 SNP; n=156; testable 80,554
+REML on real data: Ka fraction=0.696, Kd=0.228, residual=0.075
+scan in 1.2 s;  lambda=1.23;  tested 67,829
+BEST: chr14:169211003  p_dom=1.174e-06  beta=+3.377
+   chr14: 169211163  p=1.17e-06  beta=+3.38
+   chr14: 169211101  p=1.17e-06  beta=+3.38
+   chr14: 169211066  p=1.17e-06  beta=+3.38
+   chr14: 169211003  p=1.17e-06  beta=+3.38
+   chr17:  34229850  p=1.35e-05  beta=+3.08
+   chr17: 168413763  p=1.87e-05  beta=-7.10
+   chr14: 169230007  p=3.77e-05  beta=-3.14
+   chr14: 169230309  p=3.77e-05  beta=-3.14
+
+null model: b=[62.87  0.78 12.96], s2=65.42
+  [permutation] 100/5000 (45 s) thr5%=2.38e-06
+  [permutation] 200/5000 (95 s) thr5%=3.24e-06
+  [permutation] 300/5000 (141 s) thr5%=4.87e-06
+  [permutation] 400/5000 (190 s) thr5%=4.95e-06
+  [permutation] 500/5000 (235 s) thr5%=4.81e-06
+  [permutation] 600/5000 (282 s) thr5%=4.88e-06
+  [permutation] 700/5000 (331 s) thr5%=4.82e-06
+  [permutation] 800/5000 (376 s) thr5%=4.89e-06
+  [permutation] 900/5000 (420 s) thr5%=4.82e-06
+  [permutation] 1000/5000 (466 s) thr5%=4.52e-06
+  [permutation] 1100/5000 (515 s) thr5%=4.77e-06
+  [permutation] 1200/5000 (563 s) thr5%=4.82e-06
+  [permutation] 1300/5000 (607 s) thr5%=4.95e-06
+  [permutation] 1400/5000 (653 s) thr5%=4.88e-06
+  [permutation] 1500/5000 (703 s) thr5%=4.89e-06
+  [permutation] 1600/5000 (749 s) thr5%=4.93e-06
+  [permutation] 1700/5000 (798 s) thr5%=4.93e-06
+  [permutation] 1800/5000 (848 s) thr5%=4.96e-06
+  [permutation] 1900/5000 (893 s) thr5%=5.05e-06
+  [permutation] 2000/5000 (940 s) thr5%=5.05e-06
+  [permutation] 2100/5000 (985 s) thr5%=4.95e-06
+  [permutation] 2200/5000 (1032 s) thr5%=4.89e-06
+  [permutation] 2300/5000 (1075 s) thr5%=4.89e-06
+  [permutation] 2400/5000 (1120 s) thr5%=4.95e-06
+  [permutation] 2500/5000 (1173 s) thr5%=4.93e-06
+  [permutation] 2600/5000 (1228 s) thr5%=4.88e-06
+  [permutation] 2700/5000 (1276 s) thr5%=4.82e-06
+  [permutation] 2800/5000 (1327 s) thr5%=4.78e-06
+  [permutation] 2900/5000 (1375 s) thr5%=4.83e-06
+  [permutation] 3000/5000 (1423 s) thr5%=4.78e-06
+  [permutation] 3100/5000 (1481 s) thr5%=4.82e-06
+  [permutation] 3200/5000 (1543 s) thr5%=4.82e-06
+  [permutation] 3300/5000 (1591 s) thr5%=4.83e-06
+  [permutation] 3400/5000 (1636 s) thr5%=4.88e-06
+  [permutation] 3500/5000 (1680 s) thr5%=4.78e-06
+  [permutation] 3600/5000 (1733 s) thr5%=4.82e-06
+  [permutation] 3700/5000 (1779 s) thr5%=4.84e-06
+  [permutation] 3800/5000 (1824 s) thr5%=4.82e-06
+  [permutation] 3900/5000 (1873 s) thr5%=4.77e-06
+  [permutation] 4000/5000 (1922 s) thr5%=4.82e-06
+  [permutation] 4100/5000 (1969 s) thr5%=4.82e-06
+  [permutation] 4200/5000 (2016 s) thr5%=4.83e-06
+  [permutation] 4300/5000 (2062 s) thr5%=4.86e-06
+  [permutation] 4400/5000 (2108 s) thr5%=4.88e-06
+  [permutation] 4500/5000 (2152 s) thr5%=4.88e-06
+  [permutation] 4600/5000 (2196 s) thr5%=4.89e-06
+  [permutation] 4700/5000 (2243 s) thr5%=4.93e-06
+  [permutation] 4800/5000 (2288 s) thr5%=4.88e-06
+  [permutation] 4900/5000 (2334 s) thr5%=4.93e-06
+  [permutation] 5000/5000 (2385 s) thr5%=4.95e-06
+
+========================================================================
+RESULT chr14 (Ka+Kd model with mother effects, 5000 replicates, seed_weight_1000)
+  observed best p_dom = 1.174e-06 @ chr14:169211003
+  [permutation] thr5%=4.95e-06  thr1%=1.36e-06  genome-wide p=0.0084  -> SIGNIFICANT
+
+Saved: dominance_scan.csv, dominance_null_bootstrap.csv, dominance_null_permutation.csv

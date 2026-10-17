@@ -1,0 +1,14 @@
+Hybrid BLUP phenotypes: extension to height and diameter
+
+plant_height   n= 806 combinations=162  s2g= 146.235 s2e=  68.145  repeatability=0.682  H2(mean)=0.914
+head_diameter  n= 804 combinations=162  s2g=   0.681 s2e=   2.260  repeatability=0.231  H2(mean)=0.599
+seed_yield     n= 963 combinations=162  s2g=   0.114 s2e=   0.320  repeatability=0.262  H2(mean)=0.678
+               check vs published column: max |Δ| = 0.0000 (correlation 1.000000)
+oil_content    n= 957 combinations=162  s2g=   5.185 s2e=   2.296  repeatability=0.693  H2(mean)=0.930
+               check vs published column: max |Δ| = 0.0000 (correlation 1.000000)
+seed_weight_1000 n= 962 combinations=162  s2g= 140.037 s2e=  34.293  repeatability=0.803  H2(mean)=0.960
+               check vs published column: max |Δ| = 0.0000 (correlation 1.000000)
+
+written: tables, 162 hybrids × 6 traits
+columns: seed_yield, oil_content, seed_weight_1000, oil_yield, plant_height, head_diameter
+non-missing in new columns: plant_height 162, head_diameter 162

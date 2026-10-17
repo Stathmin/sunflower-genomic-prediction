@@ -1,0 +1,361 @@
+﻿panel,n_lines,trait,locus,present,p,markers_in_window
+call rate ≥ 0.9,54_lines,oil_content,chr8:782740,True,0.0006280878494744741,1
+call rate ≥ 0.9,54_lines,oil_content,chr17:50245155,True,0.6133622950455974,1
+call rate ≥ 0.9,54_lines,oil_content,chr17:50459845,False,,0
+call rate ≥ 0.9,54_lines,oil_content,chr5:~90.15M,True,0.18117226521283006,19
+call rate ≥ 0.9,54_lines,oil_content,chr7:~144.16M,True,0.11715656851893891,35
+call rate ≥ 0.9,54_lines,hull_content,chr8:782740,True,0.003266841075462397,1
+call rate ≥ 0.9,54_lines,hull_content,chr17:50245155,True,0.19042774983197655,1
+call rate ≥ 0.9,54_lines,hull_content,chr17:50459845,False,,0
+call rate ≥ 0.9,54_lines,hull_content,chr5:~90.15M,True,0.18559936779302913,19
+call rate ≥ 0.9,54_lines,hull_content,chr7:~144.16M,True,0.3278395278747103,35
+call rate ≥ 0.9,54_lines,seed_weight_1000,chr8:782740,True,0.5774573776708952,1
+call rate ≥ 0.9,54_lines,seed_weight_1000,chr17:50245155,True,0.9866621176095661,1
+call rate ≥ 0.9,54_lines,seed_weight_1000,chr17:50459845,False,,0
+call rate ≥ 0.9,54_lines,seed_weight_1000,chr5:~90.15M,True,0.18719507062393692,19
+call rate ≥ 0.9,54_lines,seed_weight_1000,chr7:~144.16M,True,0.19048512732326872,35
+call rate ≥ 0.9,54_lines,plant_height,chr8:782740,True,0.058863697782295374,1
+call rate ≥ 0.9,54_lines,plant_height,chr17:50245155,True,0.18252626966978927,1
+call rate ≥ 0.9,54_lines,plant_height,chr17:50459845,False,,0
+call rate ≥ 0.9,54_lines,plant_height,chr5:~90.15M,True,0.17515339320679407,19
+call rate ≥ 0.9,54_lines,plant_height,chr7:~144.16M,True,0.13409624492560762,35
+call rate ≥ 0.9,54_lines,head_diameter,chr8:782740,True,0.011898918460797265,1
+call rate ≥ 0.9,54_lines,head_diameter,chr17:50245155,True,0.14431341118220398,1
+call rate ≥ 0.9,54_lines,head_diameter,chr17:50459845,False,,0
+call rate ≥ 0.9,54_lines,head_diameter,chr5:~90.15M,True,0.24072458691762136,19
+call rate ≥ 0.9,54_lines,head_diameter,chr7:~144.16M,True,0.06049318144715127,35
+call rate ≥ 0.9,54_lines,days_emergence_flowering,chr8:782740,True,0.017738803274123836,1
+call rate ≥ 0.9,54_lines,days_emergence_flowering,chr17:50245155,True,0.5009654911474349,1
+call rate ≥ 0.9,54_lines,days_emergence_flowering,chr17:50459845,False,,0
+call rate ≥ 0.9,54_lines,days_emergence_flowering,chr5:~90.15M,True,0.06784086797888524,19
+call rate ≥ 0.9,54_lines,days_emergence_flowering,chr7:~144.16M,True,0.45270958854561016,35
+call rate ≥ 0.9,54_lines,days_central_to_side,chr8:782740,True,0.913979673043526,1
+call rate ≥ 0.9,54_lines,days_central_to_side,chr17:50245155,True,0.9385973455070833,1
+call rate ≥ 0.9,54_lines,days_central_to_side,chr17:50459845,False,,0
+call rate ≥ 0.9,54_lines,days_central_to_side,chr5:~90.15M,True,0.17603788822029,19
+call rate ≥ 0.9,54_lines,days_central_to_side,chr7:~144.16M,True,0.0012125055705985378,35
+call rate ≥ 0.9,54_lines,autofertility_self,chr8:782740,True,0.08315258790933996,1
+call rate ≥ 0.9,54_lines,autofertility_self,chr17:50245155,True,0.8220384889870433,1
+call rate ≥ 0.9,54_lines,autofertility_self,chr17:50459845,False,,0
+call rate ≥ 0.9,54_lines,autofertility_self,chr5:~90.15M,True,0.4467229505510102,19
+call rate ≥ 0.9,54_lines,autofertility_self,chr7:~144.16M,True,0.1505286511038822,35
+call rate ≥ 0.9,54_lines,autofertility_open,chr8:782740,True,0.0032205247581071324,1
+call rate ≥ 0.9,54_lines,autofertility_open,chr17:50245155,True,0.6864710066528031,1
+call rate ≥ 0.9,54_lines,autofertility_open,chr17:50459845,False,,0
+call rate ≥ 0.9,54_lines,autofertility_open,chr5:~90.15M,True,0.5291170893299144,19
+call rate ≥ 0.9,54_lines,autofertility_open,chr7:~144.16M,True,0.2492545500597292,35
+call rate ≥ 0.9,52_lines,oil_content,chr8:782740,True,0.002495427480897276,1
+call rate ≥ 0.9,52_lines,oil_content,chr17:50245155,True,0.3864410682966347,1
+call rate ≥ 0.9,52_lines,oil_content,chr17:50459845,False,,0
+call rate ≥ 0.9,52_lines,oil_content,chr5:~90.15M,True,0.658231115831252,13
+call rate ≥ 0.9,52_lines,oil_content,chr7:~144.16M,True,0.03050901767709263,35
+call rate ≥ 0.9,52_lines,hull_content,chr8:782740,True,0.008947245056741491,1
+call rate ≥ 0.9,52_lines,hull_content,chr17:50245155,True,0.8025827556183589,1
+call rate ≥ 0.9,52_lines,hull_content,chr17:50459845,False,,0
+call rate ≥ 0.9,52_lines,hull_content,chr5:~90.15M,True,0.24419989199630687,13
+call rate ≥ 0.9,52_lines,hull_content,chr7:~144.16M,True,0.030193724422270408,35
+call rate ≥ 0.9,52_lines,seed_weight_1000,chr8:782740,True,0.9383946770872582,1
+call rate ≥ 0.9,52_lines,seed_weight_1000,chr17:50245155,True,0.1202116632949194,1
+call rate ≥ 0.9,52_lines,seed_weight_1000,chr17:50459845,False,,0
+call rate ≥ 0.9,52_lines,seed_weight_1000,chr5:~90.15M,True,0.18124779516645004,13
+call rate ≥ 0.9,52_lines,seed_weight_1000,chr7:~144.16M,True,0.10882011688789217,35
+call rate ≥ 0.9,52_lines,plant_height,chr8:782740,True,0.04944367099257389,1
+call rate ≥ 0.9,52_lines,plant_height,chr17:50245155,True,0.7769130706710686,1
+call rate ≥ 0.9,52_lines,plant_height,chr17:50459845,False,,0
+call rate ≥ 0.9,52_lines,plant_height,chr5:~90.15M,True,0.28737932849410686,13
+call rate ≥ 0.9,52_lines,plant_height,chr7:~144.16M,True,0.11557260226980764,35
+call rate ≥ 0.9,52_lines,head_diameter,chr8:782740,True,0.02064091812810345,1
+call rate ≥ 0.9,52_lines,head_diameter,chr17:50245155,True,0.10402629716592712,1
+call rate ≥ 0.9,52_lines,head_diameter,chr17:50459845,False,,0
+call rate ≥ 0.9,52_lines,head_diameter,chr5:~90.15M,True,0.0337994593306227,13
+call rate ≥ 0.9,52_lines,head_diameter,chr7:~144.16M,True,0.090538216701616,35
+call rate ≥ 0.9,52_lines,days_emergence_flowering,chr8:782740,True,0.007098191329329883,1
+call rate ≥ 0.9,52_lines,days_emergence_flowering,chr17:50245155,True,0.8773149679584205,1
+call rate ≥ 0.9,52_lines,days_emergence_flowering,chr17:50459845,False,,0
+call rate ≥ 0.9,52_lines,days_emergence_flowering,chr5:~90.15M,True,0.07542467661528052,13
+call rate ≥ 0.9,52_lines,days_emergence_flowering,chr7:~144.16M,True,0.2857963624715541,35
+call rate ≥ 0.9,52_lines,days_central_to_side,chr8:782740,True,0.8256089834987692,1
+call rate ≥ 0.9,52_lines,days_central_to_side,chr17:50245155,True,0.7663134510904308,1
+call rate ≥ 0.9,52_lines,days_central_to_side,chr17:50459845,False,,0
+call rate ≥ 0.9,52_lines,days_central_to_side,chr5:~90.15M,True,0.5083792524393629,13
+call rate ≥ 0.9,52_lines,days_central_to_side,chr7:~144.16M,True,0.0012655963072015588,35
+call rate ≥ 0.9,52_lines,autofertility_self,chr8:782740,True,0.11615157132956357,1
+call rate ≥ 0.9,52_lines,autofertility_self,chr17:50245155,True,0.5506228026399932,1
+call rate ≥ 0.9,52_lines,autofertility_self,chr17:50459845,False,,0
+call rate ≥ 0.9,52_lines,autofertility_self,chr5:~90.15M,True,0.4562857890373292,13
+call rate ≥ 0.9,52_lines,autofertility_self,chr7:~144.16M,True,0.18133378540865905,35
+call rate ≥ 0.9,52_lines,autofertility_open,chr8:782740,True,0.006110748594072148,1
+call rate ≥ 0.9,52_lines,autofertility_open,chr17:50245155,True,0.9764718355174462,1
+call rate ≥ 0.9,52_lines,autofertility_open,chr17:50459845,False,,0
+call rate ≥ 0.9,52_lines,autofertility_open,chr5:~90.15M,True,0.26501550372531457,13
+call rate ≥ 0.9,52_lines,autofertility_open,chr7:~144.16M,True,0.20721888311260253,35
+call rate ≥ 0.8,54_lines,oil_content,chr8:782740,True,0.0006253141803792587,1
+call rate ≥ 0.8,54_lines,oil_content,chr17:50245155,True,0.710465108843084,1
+call rate ≥ 0.8,54_lines,oil_content,chr17:50459845,False,,0
+call rate ≥ 0.8,54_lines,oil_content,chr5:~90.15M,True,0.10026524266567283,22
+call rate ≥ 0.8,54_lines,oil_content,chr7:~144.16M,True,0.05635440998950825,58
+call rate ≥ 0.8,54_lines,hull_content,chr8:782740,True,0.0029150130319744276,1
+call rate ≥ 0.8,54_lines,hull_content,chr17:50245155,True,0.27817261758873363,1
+call rate ≥ 0.8,54_lines,hull_content,chr17:50459845,False,,0
+call rate ≥ 0.8,54_lines,hull_content,chr5:~90.15M,True,0.1694179468946919,22
+call rate ≥ 0.8,54_lines,hull_content,chr7:~144.16M,True,0.10194860163814205,58
+call rate ≥ 0.8,54_lines,seed_weight_1000,chr8:782740,True,0.5102797065635057,1
+call rate ≥ 0.8,54_lines,seed_weight_1000,chr17:50245155,True,0.9652191421063876,1
+call rate ≥ 0.8,54_lines,seed_weight_1000,chr17:50459845,False,,0
+call rate ≥ 0.8,54_lines,seed_weight_1000,chr5:~90.15M,True,0.16442862122600788,22
+call rate ≥ 0.8,54_lines,seed_weight_1000,chr7:~144.16M,True,0.09602206927066492,58
+call rate ≥ 0.8,54_lines,plant_height,chr8:782740,True,0.0604680402051326,1
+call rate ≥ 0.8,54_lines,plant_height,chr17:50245155,True,0.21480375478776337,1
+call rate ≥ 0.8,54_lines,plant_height,chr17:50459845,False,,0
+call rate ≥ 0.8,54_lines,plant_height,chr5:~90.15M,True,0.19613371692554823,22
+call rate ≥ 0.8,54_lines,plant_height,chr7:~144.16M,True,0.07243863562801268,58
+call rate ≥ 0.8,54_lines,head_diameter,chr8:782740,True,0.010832806574257147,1
+call rate ≥ 0.8,54_lines,head_diameter,chr17:50245155,True,0.15857659926032064,1
+call rate ≥ 0.8,54_lines,head_diameter,chr17:50459845,False,,0
+call rate ≥ 0.8,54_lines,head_diameter,chr5:~90.15M,True,0.008858106322104991,22
+call rate ≥ 0.8,54_lines,head_diameter,chr7:~144.16M,True,0.06497303887476225,58
+call rate ≥ 0.8,54_lines,days_emergence_flowering,chr8:782740,True,0.018518579493610597,1
+call rate ≥ 0.8,54_lines,days_emergence_flowering,chr17:50245155,True,0.5497374357823188,1
+call rate ≥ 0.8,54_lines,days_emergence_flowering,chr17:50459845,False,,0
+call rate ≥ 0.8,54_lines,days_emergence_flowering,chr5:~90.15M,True,0.07256999710396912,22
+call rate ≥ 0.8,54_lines,days_emergence_flowering,chr7:~144.16M,True,0.22739546431788715,58
+call rate ≥ 0.8,54_lines,days_central_to_side,chr8:782740,True,0.8968718037014449,1
+call rate ≥ 0.8,54_lines,days_central_to_side,chr17:50245155,True,0.9212279134631616,1
+call rate ≥ 0.8,54_lines,days_central_to_side,chr17:50459845,False,,0
+call rate ≥ 0.8,54_lines,days_central_to_side,chr5:~90.15M,True,0.011767022228464647,22
+call rate ≥ 0.8,54_lines,days_central_to_side,chr7:~144.16M,True,0.00044721173042819247,58
+call rate ≥ 0.8,54_lines,autofertility_self,chr8:782740,True,0.0776844432630608,1
+call rate ≥ 0.8,54_lines,autofertility_self,chr17:50245155,True,0.7459469396911838,1
+call rate ≥ 0.8,54_lines,autofertility_self,chr17:50459845,False,,0
+call rate ≥ 0.8,54_lines,autofertility_self,chr5:~90.15M,True,0.18344198479608495,22
+call rate ≥ 0.8,54_lines,autofertility_self,chr7:~144.16M,True,0.1585062153404122,58
+call rate ≥ 0.8,54_lines,autofertility_open,chr8:782740,True,0.0025475809999950176,1
+call rate ≥ 0.8,54_lines,autofertility_open,chr17:50245155,True,0.6937369374207653,1
+call rate ≥ 0.8,54_lines,autofertility_open,chr17:50459845,False,,0
+call rate ≥ 0.8,54_lines,autofertility_open,chr5:~90.15M,True,0.14830970112692338,22
+call rate ≥ 0.8,54_lines,autofertility_open,chr7:~144.16M,True,0.15300231769291467,58
+call rate ≥ 0.8,52_lines,oil_content,chr8:782740,True,0.002588762037636572,1
+call rate ≥ 0.8,52_lines,oil_content,chr17:50245155,True,0.3371896310387638,1
+call rate ≥ 0.8,52_lines,oil_content,chr17:50459845,False,,0
+call rate ≥ 0.8,52_lines,oil_content,chr5:~90.15M,True,0.6104598867539488,16
+call rate ≥ 0.8,52_lines,oil_content,chr7:~144.16M,True,0.027250658523305372,63
+call rate ≥ 0.8,52_lines,hull_content,chr8:782740,True,0.008194605667793934,1
+call rate ≥ 0.8,52_lines,hull_content,chr17:50245155,True,0.7118025646617471,1
+call rate ≥ 0.8,52_lines,hull_content,chr17:50459845,False,,0
+call rate ≥ 0.8,52_lines,hull_content,chr5:~90.15M,True,0.26650787005382404,16
+call rate ≥ 0.8,52_lines,hull_content,chr7:~144.16M,True,0.03307053017734554,63
+call rate ≥ 0.8,52_lines,seed_weight_1000,chr8:782740,True,0.9623975502145022,1
+call rate ≥ 0.8,52_lines,seed_weight_1000,chr17:50245155,True,0.14022983358712615,1
+call rate ≥ 0.8,52_lines,seed_weight_1000,chr17:50459845,False,,0
+call rate ≥ 0.8,52_lines,seed_weight_1000,chr5:~90.15M,True,0.18246491138158838,16
+call rate ≥ 0.8,52_lines,seed_weight_1000,chr7:~144.16M,True,0.1332308585889675,63
+call rate ≥ 0.8,52_lines,plant_height,chr8:782740,True,0.047919666150626566,1
+call rate ≥ 0.8,52_lines,plant_height,chr17:50245155,True,0.7633877821235682,1
+call rate ≥ 0.8,52_lines,plant_height,chr17:50459845,False,,0
+call rate ≥ 0.8,52_lines,plant_height,chr5:~90.15M,True,0.30955452679666234,16
+call rate ≥ 0.8,52_lines,plant_height,chr7:~144.16M,True,0.0015565124665171527,63
+call rate ≥ 0.8,52_lines,head_diameter,chr8:782740,True,0.02085911160761139,1
+call rate ≥ 0.8,52_lines,head_diameter,chr17:50245155,True,0.10859886528313573,1
+call rate ≥ 0.8,52_lines,head_diameter,chr17:50459845,False,,0
+call rate ≥ 0.8,52_lines,head_diameter,chr5:~90.15M,True,0.0030100944525601253,16
+call rate ≥ 0.8,52_lines,head_diameter,chr7:~144.16M,True,0.0639290905304181,63
+call rate ≥ 0.8,52_lines,days_emergence_flowering,chr8:782740,True,0.006773271082949789,1
+call rate ≥ 0.8,52_lines,days_emergence_flowering,chr17:50245155,True,0.9094600205498297,1
+call rate ≥ 0.8,52_lines,days_emergence_flowering,chr17:50459845,False,,0
+call rate ≥ 0.8,52_lines,days_emergence_flowering,chr5:~90.15M,True,0.0885821214185363,16
+call rate ≥ 0.8,52_lines,days_emergence_flowering,chr7:~144.16M,True,0.08493109869927244,63
+call rate ≥ 0.8,52_lines,days_central_to_side,chr8:782740,True,0.7926109104320511,1
+call rate ≥ 0.8,52_lines,days_central_to_side,chr17:50245155,True,0.7533224818832938,1
+call rate ≥ 0.8,52_lines,days_central_to_side,chr17:50459845,False,,0
+call rate ≥ 0.8,52_lines,days_central_to_side,chr5:~90.15M,True,0.013469595423883455,16
+call rate ≥ 0.8,52_lines,days_central_to_side,chr7:~144.16M,True,0.0006054324471865318,63
+call rate ≥ 0.8,52_lines,autofertility_self,chr8:782740,True,0.11658884874283108,1
+call rate ≥ 0.8,52_lines,autofertility_self,chr17:50245155,True,0.5314763096877655,1
+call rate ≥ 0.8,52_lines,autofertility_self,chr17:50459845,False,,0
+call rate ≥ 0.8,52_lines,autofertility_self,chr5:~90.15M,True,0.17124926346803016,16
+call rate ≥ 0.8,52_lines,autofertility_self,chr7:~144.16M,True,0.17874405548324998,63
+call rate ≥ 0.8,52_lines,autofertility_open,chr8:782740,True,0.004995718475652624,1
+call rate ≥ 0.8,52_lines,autofertility_open,chr17:50245155,True,0.9352215858415482,1
+call rate ≥ 0.8,52_lines,autofertility_open,chr17:50459845,False,,0
+call rate ≥ 0.8,52_lines,autofertility_open,chr5:~90.15M,True,0.13888821589319614,16
+call rate ≥ 0.8,52_lines,autofertility_open,chr7:~144.16M,True,0.10807338725250891,63
+call rate ≥ 0.5,54_lines,oil_content,chr8:782740,True,0.0004802004713924671,1
+call rate ≥ 0.5,54_lines,oil_content,chr17:50245155,True,0.8539617765508438,1
+call rate ≥ 0.5,54_lines,oil_content,chr17:50459845,False,,0
+call rate ≥ 0.5,54_lines,oil_content,chr5:~90.15M,True,0.07904801933417804,30
+call rate ≥ 0.5,54_lines,oil_content,chr7:~144.16M,True,0.08539865938036034,102
+call rate ≥ 0.5,54_lines,hull_content,chr8:782740,True,0.001865330888133259,1
+call rate ≥ 0.5,54_lines,hull_content,chr17:50245155,True,0.32917074497426535,1
+call rate ≥ 0.5,54_lines,hull_content,chr17:50459845,False,,0
+call rate ≥ 0.5,54_lines,hull_content,chr5:~90.15M,True,0.041418259410170896,30
+call rate ≥ 0.5,54_lines,hull_content,chr7:~144.16M,True,0.10605725799648008,102
+call rate ≥ 0.5,54_lines,seed_weight_1000,chr8:782740,True,0.42893341408646585,1
+call rate ≥ 0.5,54_lines,seed_weight_1000,chr17:50245155,True,0.9253234112847651,1
+call rate ≥ 0.5,54_lines,seed_weight_1000,chr17:50459845,False,,0
+call rate ≥ 0.5,54_lines,seed_weight_1000,chr5:~90.15M,True,0.1634709074677487,30
+call rate ≥ 0.5,54_lines,seed_weight_1000,chr7:~144.16M,True,0.07744532785446319,102
+call rate ≥ 0.5,54_lines,plant_height,chr8:782740,True,0.066610125629247,1
+call rate ≥ 0.5,54_lines,plant_height,chr17:50245155,True,0.162428645125453,1
+call rate ≥ 0.5,54_lines,plant_height,chr17:50459845,False,,0
+call rate ≥ 0.5,54_lines,plant_height,chr5:~90.15M,True,0.1203182763940058,30
+call rate ≥ 0.5,54_lines,plant_height,chr7:~144.16M,True,0.0018171774353217148,102
+call rate ≥ 0.5,54_lines,head_diameter,chr8:782740,True,0.01608411376364635,1
+call rate ≥ 0.5,54_lines,head_diameter,chr17:50245155,True,0.27522950141486124,1
+call rate ≥ 0.5,54_lines,head_diameter,chr17:50459845,False,,0
+call rate ≥ 0.5,54_lines,head_diameter,chr5:~90.15M,True,0.007955776655033681,30
+call rate ≥ 0.5,54_lines,head_diameter,chr7:~144.16M,True,0.10165449790008747,102
+call rate ≥ 0.5,54_lines,days_emergence_flowering,chr8:782740,True,0.018287934668310694,1
+call rate ≥ 0.5,54_lines,days_emergence_flowering,chr17:50245155,True,0.4612890695137659,1
+call rate ≥ 0.5,54_lines,days_emergence_flowering,chr17:50459845,False,,0
+call rate ≥ 0.5,54_lines,days_emergence_flowering,chr5:~90.15M,True,0.09916205367475728,30
+call rate ≥ 0.5,54_lines,days_emergence_flowering,chr7:~144.16M,True,0.0849771719430427,102
+call rate ≥ 0.5,54_lines,days_central_to_side,chr8:782740,True,0.8466621698585759,1
+call rate ≥ 0.5,54_lines,days_central_to_side,chr17:50245155,True,0.8139747666113448,1
+call rate ≥ 0.5,54_lines,days_central_to_side,chr17:50459845,False,,0
+call rate ≥ 0.5,54_lines,days_central_to_side,chr5:~90.15M,True,0.013531760217313187,30
+call rate ≥ 0.5,54_lines,days_central_to_side,chr7:~144.16M,True,0.0004909352561980634,102
+call rate ≥ 0.5,54_lines,autofertility_self,chr8:782740,True,0.07378253507028659,1
+call rate ≥ 0.5,54_lines,autofertility_self,chr17:50245155,True,0.6860848028632717,1
+call rate ≥ 0.5,54_lines,autofertility_self,chr17:50459845,False,,0
+call rate ≥ 0.5,54_lines,autofertility_self,chr5:~90.15M,True,0.15383740822853495,30
+call rate ≥ 0.5,54_lines,autofertility_self,chr7:~144.16M,True,0.14485172849947955,102
+call rate ≥ 0.5,54_lines,autofertility_open,chr8:782740,True,0.001977609446118714,1
+call rate ≥ 0.5,54_lines,autofertility_open,chr17:50245155,True,0.8313075562006986,1
+call rate ≥ 0.5,54_lines,autofertility_open,chr17:50459845,False,,0
+call rate ≥ 0.5,54_lines,autofertility_open,chr5:~90.15M,True,0.1075965820588774,30
+call rate ≥ 0.5,54_lines,autofertility_open,chr7:~144.16M,True,0.14677269282976674,102
+call rate ≥ 0.5,52_lines,oil_content,chr8:782740,True,0.003274409416915538,1
+call rate ≥ 0.5,52_lines,oil_content,chr17:50245155,True,0.25381961373734135,1
+call rate ≥ 0.5,52_lines,oil_content,chr17:50459845,False,,0
+call rate ≥ 0.5,52_lines,oil_content,chr5:~90.15M,True,0.33370354416686465,24
+call rate ≥ 0.5,52_lines,oil_content,chr7:~144.16M,True,0.023220932709237824,102
+call rate ≥ 0.5,52_lines,hull_content,chr8:782740,True,0.007772627045077094,1
+call rate ≥ 0.5,52_lines,hull_content,chr17:50245155,True,0.5200486884208693,1
+call rate ≥ 0.5,52_lines,hull_content,chr17:50459845,False,,0
+call rate ≥ 0.5,52_lines,hull_content,chr5:~90.15M,True,0.06049669350556237,24
+call rate ≥ 0.5,52_lines,hull_content,chr7:~144.16M,True,0.03546956370531583,102
+call rate ≥ 0.5,52_lines,seed_weight_1000,chr8:782740,True,0.9279082359158175,1
+call rate ≥ 0.5,52_lines,seed_weight_1000,chr17:50245155,True,0.12651923704239396,1
+call rate ≥ 0.5,52_lines,seed_weight_1000,chr17:50459845,False,,0
+call rate ≥ 0.5,52_lines,seed_weight_1000,chr5:~90.15M,True,0.18266458247342943,24
+call rate ≥ 0.5,52_lines,seed_weight_1000,chr7:~144.16M,True,0.09458480459604646,102
+call rate ≥ 0.5,52_lines,plant_height,chr8:782740,True,0.04404289309916563,1
+call rate ≥ 0.5,52_lines,plant_height,chr17:50245155,True,0.616675041773918,1
+call rate ≥ 0.5,52_lines,plant_height,chr17:50459845,False,,0
+call rate ≥ 0.5,52_lines,plant_height,chr5:~90.15M,True,0.10474098824366168,24
+call rate ≥ 0.5,52_lines,plant_height,chr7:~144.16M,True,0.0009583845898542911,102
+call rate ≥ 0.5,52_lines,head_diameter,chr8:782740,True,0.03639706283900813,1
+call rate ≥ 0.5,52_lines,head_diameter,chr17:50245155,True,0.2213367876557335,1
+call rate ≥ 0.5,52_lines,head_diameter,chr17:50459845,False,,0
+call rate ≥ 0.5,52_lines,head_diameter,chr5:~90.15M,True,0.0036415987485742276,24
+call rate ≥ 0.5,52_lines,head_diameter,chr7:~144.16M,True,0.0912280712525307,102
+call rate ≥ 0.5,52_lines,days_emergence_flowering,chr8:782740,True,0.005904430732274666,1
+call rate ≥ 0.5,52_lines,days_emergence_flowering,chr17:50245155,True,0.8818937212301513,1
+call rate ≥ 0.5,52_lines,days_emergence_flowering,chr17:50459845,False,,0
+call rate ≥ 0.5,52_lines,days_emergence_flowering,chr5:~90.15M,True,0.14322319360508476,24
+call rate ≥ 0.5,52_lines,days_emergence_flowering,chr7:~144.16M,True,0.07842043965044289,102
+call rate ≥ 0.5,52_lines,days_central_to_side,chr8:782740,True,0.7286622269425501,1
+call rate ≥ 0.5,52_lines,days_central_to_side,chr17:50245155,True,0.8579876670167169,1
+call rate ≥ 0.5,52_lines,days_central_to_side,chr17:50459845,False,,0
+call rate ≥ 0.5,52_lines,days_central_to_side,chr5:~90.15M,True,0.015904846282846642,24
+call rate ≥ 0.5,52_lines,days_central_to_side,chr7:~144.16M,True,0.000641363994961137,102
+call rate ≥ 0.5,52_lines,autofertility_self,chr8:782740,True,0.12643737281111908,1
+call rate ≥ 0.5,52_lines,autofertility_self,chr17:50245155,True,0.3994329943891518,1
+call rate ≥ 0.5,52_lines,autofertility_self,chr17:50459845,False,,0
+call rate ≥ 0.5,52_lines,autofertility_self,chr5:~90.15M,True,0.1666265330102479,24
+call rate ≥ 0.5,52_lines,autofertility_self,chr7:~144.16M,True,0.17570978540966795,102
+call rate ≥ 0.5,52_lines,autofertility_open,chr8:782740,True,0.00536455632101179,1
+call rate ≥ 0.5,52_lines,autofertility_open,chr17:50245155,True,0.995343942055017,1
+call rate ≥ 0.5,52_lines,autofertility_open,chr17:50459845,False,,0
+call rate ≥ 0.5,52_lines,autofertility_open,chr5:~90.15M,True,0.11646515406595868,24
+call rate ≥ 0.5,52_lines,autofertility_open,chr7:~144.16M,True,0.10617802231715925,102
+full_coverage,54_lines,oil_content,chr8:782740,True,0.000302440034218465,1
+full_coverage,54_lines,oil_content,chr17:50245155,False,,0
+full_coverage,54_lines,oil_content,chr17:50459845,False,,0
+full_coverage,54_lines,oil_content,chr5:~90.15M,True,0.23543769110221405,11
+full_coverage,54_lines,oil_content,chr7:~144.16M,True,0.38466552609156524,6
+full_coverage,54_lines,hull_content,chr8:782740,True,0.0026358870995513467,1
+full_coverage,54_lines,hull_content,chr17:50245155,False,,0
+full_coverage,54_lines,hull_content,chr17:50459845,False,,0
+full_coverage,54_lines,hull_content,chr5:~90.15M,True,0.6787490720412703,11
+full_coverage,54_lines,hull_content,chr7:~144.16M,True,0.6118135770346222,6
+full_coverage,54_lines,seed_weight_1000,chr8:782740,True,0.5039561879813356,1
+full_coverage,54_lines,seed_weight_1000,chr17:50245155,False,,0
+full_coverage,54_lines,seed_weight_1000,chr17:50459845,False,,0
+full_coverage,54_lines,seed_weight_1000,chr5:~90.15M,True,0.18525093532109302,11
+full_coverage,54_lines,seed_weight_1000,chr7:~144.16M,True,0.33976440328141594,6
+full_coverage,54_lines,plant_height,chr8:782740,True,0.05876636936321479,1
+full_coverage,54_lines,plant_height,chr17:50245155,False,,0
+full_coverage,54_lines,plant_height,chr17:50459845,False,,0
+full_coverage,54_lines,plant_height,chr5:~90.15M,True,0.45928390690564624,11
+full_coverage,54_lines,plant_height,chr7:~144.16M,True,0.38212582559346453,6
+full_coverage,54_lines,head_diameter,chr8:782740,True,0.01840147626985877,1
+full_coverage,54_lines,head_diameter,chr17:50245155,False,,0
+full_coverage,54_lines,head_diameter,chr17:50459845,False,,0
+full_coverage,54_lines,head_diameter,chr5:~90.15M,True,0.49156400312135645,11
+full_coverage,54_lines,head_diameter,chr7:~144.16M,True,0.1655235534320514,6
+full_coverage,54_lines,days_emergence_flowering,chr8:782740,True,0.029413945714997013,1
+full_coverage,54_lines,days_emergence_flowering,chr17:50245155,False,,0
+full_coverage,54_lines,days_emergence_flowering,chr17:50459845,False,,0
+full_coverage,54_lines,days_emergence_flowering,chr5:~90.15M,True,0.20358732744062874,11
+full_coverage,54_lines,days_emergence_flowering,chr7:~144.16M,True,0.5244269121289351,6
+full_coverage,54_lines,days_central_to_side,chr8:782740,True,0.7704542426549296,1
+full_coverage,54_lines,days_central_to_side,chr17:50245155,False,,0
+full_coverage,54_lines,days_central_to_side,chr17:50459845,False,,0
+full_coverage,54_lines,days_central_to_side,chr5:~90.15M,True,0.159036970677268,11
+full_coverage,54_lines,days_central_to_side,chr7:~144.16M,True,0.4741788527389598,6
+full_coverage,54_lines,autofertility_self,chr8:782740,True,0.16521152152114843,1
+full_coverage,54_lines,autofertility_self,chr17:50245155,False,,0
+full_coverage,54_lines,autofertility_self,chr17:50459845,False,,0
+full_coverage,54_lines,autofertility_self,chr5:~90.15M,True,0.3856060163323078,11
+full_coverage,54_lines,autofertility_self,chr7:~144.16M,True,0.19807206336618632,6
+full_coverage,54_lines,autofertility_open,chr8:782740,True,0.009607221119136419,1
+full_coverage,54_lines,autofertility_open,chr17:50245155,False,,0
+full_coverage,54_lines,autofertility_open,chr17:50459845,False,,0
+full_coverage,54_lines,autofertility_open,chr5:~90.15M,True,0.2929403023575436,11
+full_coverage,54_lines,autofertility_open,chr7:~144.16M,True,0.0404893113835705,6
+full_coverage,52_lines,oil_content,chr8:782740,True,0.0011858881239162724,1
+full_coverage,52_lines,oil_content,chr17:50245155,False,,0
+full_coverage,52_lines,oil_content,chr17:50459845,False,,0
+full_coverage,52_lines,oil_content,chr5:~90.15M,True,0.43957834431198456,6
+full_coverage,52_lines,oil_content,chr7:~144.16M,True,0.25642252930142956,5
+full_coverage,52_lines,hull_content,chr8:782740,True,0.010098864202446269,1
+full_coverage,52_lines,hull_content,chr17:50245155,False,,0
+full_coverage,52_lines,hull_content,chr17:50459845,False,,0
+full_coverage,52_lines,hull_content,chr5:~90.15M,True,0.4235675846600457,6
+full_coverage,52_lines,hull_content,chr7:~144.16M,True,0.33907765636400344,5
+full_coverage,52_lines,seed_weight_1000,chr8:782740,True,0.9003173862011943,1
+full_coverage,52_lines,seed_weight_1000,chr17:50245155,False,,0
+full_coverage,52_lines,seed_weight_1000,chr17:50459845,False,,0
+full_coverage,52_lines,seed_weight_1000,chr5:~90.15M,True,0.23049884278624838,6
+full_coverage,52_lines,seed_weight_1000,chr7:~144.16M,True,0.17935648518553435,5
+full_coverage,52_lines,plant_height,chr8:782740,True,0.04692110743458127,1
+full_coverage,52_lines,plant_height,chr17:50245155,False,,0
+full_coverage,52_lines,plant_height,chr17:50459845,False,,0
+full_coverage,52_lines,plant_height,chr5:~90.15M,True,0.5546315132634596,6
+full_coverage,52_lines,plant_height,chr7:~144.16M,True,0.4780714426044022,5
+full_coverage,52_lines,head_diameter,chr8:782740,True,0.03029188994488106,1
+full_coverage,52_lines,head_diameter,chr17:50245155,False,,0
+full_coverage,52_lines,head_diameter,chr17:50459845,False,,0
+full_coverage,52_lines,head_diameter,chr5:~90.15M,True,0.34783884405963306,6
+full_coverage,52_lines,head_diameter,chr7:~144.16M,True,0.6892905632909989,5
+full_coverage,52_lines,days_emergence_flowering,chr8:782740,True,0.012093451021477117,1
+full_coverage,52_lines,days_emergence_flowering,chr17:50245155,False,,0
+full_coverage,52_lines,days_emergence_flowering,chr17:50459845,False,,0
+full_coverage,52_lines,days_emergence_flowering,chr5:~90.15M,True,0.3788943472809818,6
+full_coverage,52_lines,days_emergence_flowering,chr7:~144.16M,True,0.6660122252229492,5
+full_coverage,52_lines,days_central_to_side,chr8:782740,True,0.8487288340918103,1
+full_coverage,52_lines,days_central_to_side,chr17:50245155,False,,0
+full_coverage,52_lines,days_central_to_side,chr17:50459845,False,,0
+full_coverage,52_lines,days_central_to_side,chr5:~90.15M,True,0.4862266867369415,6
+full_coverage,52_lines,days_central_to_side,chr7:~144.16M,True,0.49314747810397097,5
+full_coverage,52_lines,autofertility_self,chr8:782740,True,0.2064647947544188,1
+full_coverage,52_lines,autofertility_self,chr17:50245155,False,,0
+full_coverage,52_lines,autofertility_self,chr17:50459845,False,,0
+full_coverage,52_lines,autofertility_self,chr5:~90.15M,True,0.4411862858995276,6
+full_coverage,52_lines,autofertility_self,chr7:~144.16M,True,0.214300013573382,5
+full_coverage,52_lines,autofertility_open,chr8:782740,True,0.006099936565004809,1
+full_coverage,52_lines,autofertility_open,chr17:50245155,False,,0
+full_coverage,52_lines,autofertility_open,chr17:50459845,False,,0
+full_coverage,52_lines,autofertility_open,chr5:~90.15M,True,0.4949233281175749,6
+full_coverage,52_lines,autofertility_open,chr7:~144.16M,True,0.03970355527896446,5

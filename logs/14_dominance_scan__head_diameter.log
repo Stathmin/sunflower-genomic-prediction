@@ -1,0 +1,32 @@
+Panel 82,889 SNP; n=156; testable 80,554
+REML on real data: Ka fraction=0.450, Kd=0.104, residual=0.446
+scan in 2.6 s;  lambda=1.17;  tested 67,829
+BEST: chr5:177849132  p_dom=1.181e-04  beta=-0.649
+   chr 5: 177849132  p=1.18e-04  beta=-0.65
+   chr 5: 177849501  p=1.21e-04  beta=-0.65
+   chr 5: 177849532  p=1.21e-04  beta=-0.65
+   chr 5: 177849450  p=1.21e-04  beta=-0.65
+   chr 5: 177704203  p=1.25e-04  beta=-0.65
+   chr12:  86841312  p=1.45e-04  beta=-1.18
+   chr12:  86841334  p=1.45e-04  beta=-1.18
+   chr16:  13769343  p=1.72e-04  beta=-0.43
+
+null model: b=[18.42 -0.11 -0.34], s2=0.46
+  [bootstrap] 100/500 (161 s) thr5%=4.76e-06
+  [bootstrap] 200/500 (282 s) thr5%=4.91e-06
+  [bootstrap] 300/500 (429 s) thr5%=4.91e-06
+  [bootstrap] 400/500 (545 s) thr5%=5.57e-06
+  [bootstrap] 500/500 (682 s) thr5%=5.61e-06
+  [permutation] 100/500 (137 s) thr5%=3.26e-06
+  [permutation] 200/500 (244 s) thr5%=3.35e-06
+  [permutation] 300/500 (354 s) thr5%=5.02e-06
+  [permutation] 400/500 (468 s) thr5%=5.45e-06
+  [permutation] 500/500 (584 s) thr5%=3.99e-06
+
+========================================================================
+RESULT chr14 (Ka+Kd model with mother effects, 500 replicates, head_diameter)
+  observed best p_dom = 1.181e-04 @ chr5:177849132
+  [bootstrap  ] thr5%=5.61e-06  thr1%=2.08e-06  genome-wide p=0.6886  -> NOT SIGNIFICANT
+  [permutation] thr5%=3.99e-06  thr1%=1.00e-06  genome-wide p=0.6966  -> NOT SIGNIFICANT
+
+Saved: dominance_scan_head_diameter.csv, dominance_null_bootstrap_head_diameter.csv, dominance_null_permutation_head_diameter.csv

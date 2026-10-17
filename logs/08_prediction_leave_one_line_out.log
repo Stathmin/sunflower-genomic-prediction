@@ -1,0 +1,6 @@
+SNPs: 82,889; hybrids with genotypes: 162
+
+seed_weight_1000 n=156 fathers=52  LOFO: overall r=0.840, within tester VK101 0.627, VA761 0.634, VK934 0.433, Fisher average 0.571  | control 5-fold r=0.837 (matched prediction_accuracy_5fold)
+oil_content  n=156 fathers=52  LOFO: overall r=0.637, within tester VK101 0.360, VA761 0.369, VK934 0.287, Fisher average 0.339  | control 5-fold r=0.654 (matched prediction_accuracy_5fold)
+oil_yield    n=156 fathers=52  LOFO: overall r=0.365, within tester VK101 0.280, VA761 0.345, VK934 0.373, Fisher average 0.333  | control 5-fold r=0.350 (matched prediction_accuracy_5fold)
+seed_yield   n=156 fathers=52  LOFO: overall r=0.319, within tester VK101 0.206, VA761 0.363, VK934 0.346, Fisher average 0.307  | control 5-fold r=0.290 (matched prediction_accuracy_5fold)

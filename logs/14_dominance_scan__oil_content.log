@@ -1,0 +1,38 @@
+Panel 82,889 SNP; n=156; testable 80,554
+REML on real data: Ka fraction=0.782, Kd=0.000, residual=0.218
+scan in 1.3 s;  lambda=0.89;  tested 67,829
+BEST: chr12:5553725  p_dom=7.870e-05  beta=-0.567
+   chr12:   5553761  p=7.87e-05  beta=-0.57
+   chr12:   5553725  p=7.87e-05  beta=-0.57
+   chr 4: 134819042  p=7.95e-05  beta=-0.55
+   chr11:  40157375  p=1.50e-04  beta=+0.58
+   chr17:  20023600  p=1.73e-04  beta=-0.65
+   chr12: 154377869  p=1.81e-04  beta=+0.53
+   chr12: 153643442  p=1.81e-04  beta=+0.53
+   chr16:  13244993  p=2.55e-04  beta=-0.46
+
+null model: b=[50.6  -2.51 -1.06], s2=2.56
+  [bootstrap] 100/500 (78 s) thr5%=1.10e-05
+  [bootstrap] 200/500 (151 s) thr5%=1.10e-05
+  [bootstrap] 300/500 (222 s) thr5%=1.06e-05
+  [bootstrap] 400/500 (303 s) thr5%=9.80e-06
+  [bootstrap] 500/500 (386 s) thr5%=9.80e-06
+  [permutation] 100/500 (94 s) thr5%=3.68e-06
+  [permutation] 200/500 (152 s) thr5%=4.50e-06
+  [permutation] 300/500 (210 s) thr5%=3.54e-06
+  [permutation] 400/500 (268 s) thr5%=3.68e-06
+  [permutation] 500/500 (326 s) thr5%=3.76e-06
+  [permutation_within] 100/500 (57 s) thr5%=3.41e-06
+  [permutation_within] 200/500 (114 s) thr5%=4.32e-06
+  [permutation_within] 300/500 (170 s) thr5%=4.32e-06
+  [permutation_within] 400/500 (230 s) thr5%=3.70e-06
+  [permutation_within] 500/500 (287 s) thr5%=3.70e-06
+
+========================================================================
+RESULT chr14 (Ka+Kd model with mother effects, 500 replicates, oil_content)
+  observed best p_dom = 7.870e-05 @ chr12:5553725
+  [bootstrap  ] thr5%=9.80e-06  thr1%=3.17e-06  genome-wide p=0.4790  -> NOT SIGNIFICANT
+  [permutation] thr5%=3.76e-06  thr1%=1.49e-07  genome-wide p=0.5250  -> NOT SIGNIFICANT
+  [permutation_within] thr5%=3.70e-06  thr1%=7.13e-07  genome-wide p=0.5230  -> NOT SIGNIFICANT
+
+Saved: dominance_scan_oil_content.csv, dominance_null_bootstrap_oil_content.csv, dominance_null_permutation_oil_content.csv

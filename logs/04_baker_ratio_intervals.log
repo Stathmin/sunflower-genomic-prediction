@@ -1,0 +1,32 @@
+
+========================================================================================
+### seed_yield
+  Baker's ratio = 0.4395;  95% profile interval = 0.000–0.815
+      share line               =   4.60 % ± 5.03 %
+      share tester_x_line      =  11.74 % ± 3.85 %
+      share year_x_line        =  17.46 % ± 4.99 %
+      share year_x_tester_x_line =   6.80 % ± 3.86 %
+      share error              =  59.39 % ± 3.88 %
+      sum of shares = 1.000000
+
+========================================================================================
+### oil_content
+  Baker's ratio = 0.9577;  95% profile interval = 0.917–0.984
+      share line               =  59.26 % ± 5.35 %
+      share tester_x_line      =   5.23 % ± 1.85 %
+      share year_x_line        =   2.51 % ± 1.42 %
+      share year_x_tester_x_line =   1.35 % ± 1.77 %
+      share error              =  31.65 % ± 4.23 %
+      sum of shares = 1.000000
+
+========================================================================================
+### seed_weight_1000
+  Baker's ratio = 0.9511;  95% profile interval = 0.907–0.979
+      share line               =  64.69 % ± 5.05 %
+      share tester_x_line      =   6.65 % ± 2.21 %
+      share year_x_line        =   0.31 % ± 1.13 %
+      share year_x_tester_x_line =   6.18 % ± 2.07 %
+      share error              =  22.18 % ± 3.19 %
+      sum of shares = 1.000000
+
+saved tables/baker_ratio_intervals.json

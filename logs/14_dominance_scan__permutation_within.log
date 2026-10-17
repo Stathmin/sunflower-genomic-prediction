@@ -1,0 +1,26 @@
+Panel 82,889 SNP; n=156; testable 80,554
+REML on real data: Ka fraction=0.696, Kd=0.228, residual=0.075
+scan in 1.4 s;  lambda=1.23;  tested 67,829
+BEST: chr14:169211003  p_dom=1.174e-06  beta=+3.377
+   chr14: 169211163  p=1.17e-06  beta=+3.38
+   chr14: 169211101  p=1.17e-06  beta=+3.38
+   chr14: 169211066  p=1.17e-06  beta=+3.38
+   chr14: 169211003  p=1.17e-06  beta=+3.38
+   chr17:  34229850  p=1.35e-05  beta=+3.08
+   chr17: 168413763  p=1.87e-05  beta=-7.10
+   chr14: 169230007  p=3.77e-05  beta=-3.14
+   chr14: 169230309  p=3.77e-05  beta=-3.14
+
+null model: b=[62.87  0.78 12.96], s2=65.42
+  [permutation_within] 100/500 (91 s) thr5%=4.81e-06
+  [permutation_within] 200/500 (179 s) thr5%=6.30e-06
+  [permutation_within] 300/500 (275 s) thr5%=3.94e-06
+  [permutation_within] 400/500 (376 s) thr5%=3.44e-06
+  [permutation_within] 500/500 (484 s) thr5%=3.94e-06
+
+========================================================================
+RESULT chr14 (Ka+Kd model with mother effects, 500 replicates, seed_weight_1000)
+  observed best p_dom = 1.174e-06 @ chr14:169211003
+  [permutation_within] thr5%=3.94e-06  thr1%=9.65e-07  genome-wide p=0.0140  -> SIGNIFICANT
+
+Saved: dominance_scan.csv, dominance_null_bootstrap.csv, dominance_null_permutation.csv

@@ -1,0 +1,6 @@
+SNPs: 82,889; hybrids with genotypes: 162
+
+seed_weight_1000  n=156  overall r=0.837 (matches prediction_accuracy_5fold)  within tester: VK101 0.623 (n=52, p=8.1e-07), VA761 0.621 (n=52, p=9e-07), VK934 0.418 (n=52, p=0.002)  | Fisher-averaged mean 0.561 | between-tester variance share 57.2 %
+oil_content       n=156  overall r=0.654 (matches prediction_accuracy_5fold)  within tester: VK101 0.375 (n=52, p=0.0061), VA761 0.426 (n=52, p=0.0016), VK934 0.344 (n=52, p=0.013)  | Fisher-averaged mean 0.382 | between-tester variance share 33.6 %
+oil_yield         n=156  overall r=0.350 (matches prediction_accuracy_5fold)  within tester: VK101 0.245 (n=52, p=0.079), VA761 0.320 (n=52, p=0.021), VK934 0.386 (n=52, p=0.0047)  | Fisher-averaged mean 0.318 | between-tester variance share 2.8 %
+seed_yield        n=156  overall r=0.290 (matches prediction_accuracy_5fold)  within tester: VK101 0.149 (n=52, p=0.29), VA761 0.328 (n=52, p=0.018), VK934 0.352 (n=52, p=0.01)  | Fisher-averaged mean 0.279 | between-tester variance share 1.2 %

@@ -1,0 +1,7 @@
+  window_snps=None, step=None, r2_threshold=None, snps=82889, pc1_pct=8.500, pc2_pct=6.446, r_seed_yield=0.472, r_oil_content=0.404, r_seed_weight_1000=0.655, r_oil_yield=0.480
+  window_snps=50, step=5, r2_threshold=0.500, snps=11280, pc1_pct=6.963, pc2_pct=5.287, r_seed_yield=0.473, r_oil_content=0.371, r_seed_weight_1000=0.634, r_oil_yield=0.490
+  window_snps=50, step=5, r2_threshold=0.200, snps=5202, pc1_pct=7.092, pc2_pct=5.613, r_seed_yield=0.484, r_oil_content=0.371, r_seed_weight_1000=0.641, r_oil_yield=0.486
+  window_snps=1000, step=50, r2_threshold=0.500, snps=8863, pc1_pct=6.501, pc2_pct=5.063, r_seed_yield=0.488, r_oil_content=0.389, r_seed_weight_1000=0.586, r_oil_yield=0.490
+  window_snps=1000, step=50, r2_threshold=0.200, snps=2327, pc1_pct=6.135, pc2_pct=4.575, r_seed_yield=0.394, r_oil_content=0.420, r_seed_weight_1000=0.599, r_oil_yield=0.426
+
+saved tables/ld_pruning_sensitivity.csv

@@ -1,0 +1,6 @@
+
+Predictive ability of paternal GCA (r), leave-one-line-out, 52 oilseed lines:
+                                analysis  seed_yield  oil_content  seed_weight_1000  oil_yield
+             main (BLUPs from all plots)       0.472        0.404             0.655      0.480
+BLUPs refitted without the held-out line       0.469        0.404             0.655      0.478
+    removed plot values put back (n = 7)       0.472        0.393             0.651      0.483

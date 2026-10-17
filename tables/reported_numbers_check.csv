@@ -1,0 +1,26 @@
+﻿value,in_text,recomputed,matched
+H² of the combination mean — oil_content,0.9,0.8951,YES
+H² of the combination mean — seed_weight_1000,0.91,0.9104,YES
+H² of the combination mean — seed_yield,0.43,0.4266,YES
+plot repeatability — seed yield,0.16,0.1635,YES
+baker seed_yield (plot-level),0.44,0.4389,YES
+"baker seed_yield (year-means table, robustness)",0.716,0.7294,YES
+baker oil_content (plot-level),0.958,0.956,YES
+"baker oil_content (year-means table, robustness)",0.936,0.9389,YES
+baker seed_weight_1000 (plot-level),0.951,0.952,YES
+"baker seed_weight_1000 (year-means table, robustness)",0.936,0.9398,YES
+GCA VK101A — oil_content,1.2,1.1971,YES
+GCA VK934A — seed_weight_1000,10.9,10.9173,YES
+GCA VK934A — plant_height,8.4,8.4306,YES
+detectable PVE at n=54 and 80% power,42.0,42.3083,YES
+n for 80% power at PVE 15 %,225.0,224.4056,YES
+n for 80% power at PVE 10 %,355.0,356.4089,YES
+n for 80% power at PVE 5 %,750.0,752.4188,YES
+hybrid EMMAX λ (mothers),,1.0259,—
+"significant SNP at 5e-8, hybrids (mothers)",0.0,0.0,YES
+hybrid EMMAX λ (mothers_plus_3PC),,1.0671,—
+"significant SNP at 5e-8, hybrids (mothers_plus_3PC)",0.0,0.0,YES
+GS accuracy — seed_weight_1000,0.84,0.837,YES
+GS accuracy — oil_content,0.65,0.654,YES
+GS accuracy — oil_yield,0.35,0.35,YES
+GS accuracy — seed_yield,0.29,0.29,YES

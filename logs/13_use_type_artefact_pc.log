@@ -1,0 +1,36 @@
+lines in merged: 54
+
+### 54_with_confectionery: 54 lines, panel 81,903 SNP
+  oil_content                λ=1.06  p<5e-8: 0  emp.thr=2.7e-06 -> significant 27  top chr6:55262886 p=2.6e-07
+  hull_content               λ=1.04  p<5e-8: 0  emp.thr=3.3e-06 -> significant 0  top chr2:59404576 p=1.5e-05
+  seed_weight_1000           λ=1.14  p<5e-8: 0  emp.thr=2.7e-06 -> significant 1  top chr5:105499962 p=1.8e-06
+  head_diameter              λ=1.03  p<5e-8: 0  emp.thr=4.4e-06 -> significant 0  top chr17:1655709 p=8.9e-06
+  plant_height               λ=0.95  p<5e-8: 0  emp.thr=3.8e-06 -> significant 0  top chr1:146106634 p=6.5e-06
+  days_emergence_flowering   λ=1.03  p<5e-8: 0  emp.thr=3.4e-06 -> significant 0  top chr16:39172503 p=1.1e-05
+  autofertility_self         λ=1.06  p<5e-8: 0  emp.thr=3.3e-06 -> significant 0  top chr9:122153274 p=1.2e-05
+  autofertility_open         λ=1.03  p<5e-8: 0  emp.thr=3.6e-06 -> significant 0  top chr11:183857576 p=1.4e-05
+
+### 52_oilseed_only: 52 lines, panel 80,410 SNP
+  oil_content                λ=0.97  p<5e-8: 0  emp.thr=2.0e-06 -> significant 0  top chr6:144178858 p=6.2e-06
+  hull_content               λ=1.01  p<5e-8: 0  emp.thr=2.6e-06 -> significant 0  top chr12:158384991 p=1.1e-04
+  seed_weight_1000           λ=0.95  p<5e-8: 0  emp.thr=2.0e-06 -> significant 0  top chr17:59779492 p=3.6e-05
+  head_diameter              λ=0.97  p<5e-8: 0  emp.thr=3.9e-06 -> significant 1  top chr17:1655709 p=4.5e-07
+  plant_height               λ=1.05  p<5e-8: 0  emp.thr=3.6e-06 -> significant 0  top chr1:146106634 p=4.5e-06
+  days_emergence_flowering   λ=0.98  p<5e-8: 0  emp.thr=2.5e-06 -> significant 0  top chr16:39172503 p=5.8e-06
+  autofertility_self         λ=1.03  p<5e-8: 0  emp.thr=2.4e-06 -> significant 0  top chr9:122153274 p=1.0e-05
+  autofertility_open         λ=1.01  p<5e-8: 0  emp.thr=3.1e-06 -> significant 0  top chr11:183857576 p=9.7e-06
+
+=== SUMMARY (confectionery artefact on merged) ===
+                                n_p<5e-8                           n_below_emp                      
+callset                  52_oilseed_only 54_with_confectionery 52_oilseed_only 54_with_confectionery
+trait                                                                                               
+autofertility_open                     0                     0               0                     0
+autofertility_self                     0                     0               0                     0
+days_emergence_flowering               0                     0               0                     0
+head_diameter                          0                     0               1                     0
+hull_content                           0                     0               0                     0
+oil_content                            0                     0               0                    27
+plant_height                           0                     0               0                     0
+seed_weight_1000                       0                     0               0                     1
+
+Written: use_type_artefact_pc.csv

@@ -1,0 +1,49 @@
+======================================================================================
+A. EFFECTIVE n
+======================================================================================
+  hybrids (observations at the combination level): 162
+  paternal lines (independent genotypes):          54
+  maternal testers:                                3
+  testcrosses per father:                          [3]
+  plots per father (over all traits):              median 84, min 71, max 84
+  rank of the genotypic part of the design for paternal effects = 54;
+  162 hybrids give 54 independent paternal units, each measured 3 times (3 testers).
+
+  panel for K: 82889 SNP, 54 fathers
+  mean off-diagonal relatedness: -0.0355, diagonal 1.8834
+
+======================================================================================
+B. PATERNAL GCA PREDICTION: leave-one-father-out on means over three testers
+======================================================================================
+  seed_yield     fathers  52   r(predicted, observed) = +0.472
+  oil_content    fathers  52   r(predicted, observed) = +0.404
+  seed_weight_1000 fathers  52   r(predicted, observed) = +0.655
+  oil_yield      fathers  52   r(predicted, observed) = +0.480
+
+======================================================================================
+C. LEARNING CURVE: accuracy as a function of the number of training fathers
+======================================================================================
+  trait          n=10   n=20   n=30   n=40   n=45   n=50    LOO
+  seed_yield     +0.225  +0.371  +0.390  +0.452  +0.488  +nan   +0.472
+  oil_content    +0.280  +0.362  +0.397  +0.353  +0.392  +nan   +0.404
+  seed_weight_1000 +0.420  +0.534  +0.610  +0.639  +0.628  +nan   +0.655
+  oil_yield      +0.338  +0.402  +0.458  +0.430  +0.440  +nan   +0.480
+
+======================================================================================
+C2. REPEATED FIVE-FOLD CROSS-VALIDATION OF PATERNAL GCA (50 repeats; own random stream)
+======================================================================================
+  seed_yield     lines  52   r = 0.445 ± 0.050 (SD over repeats)
+  oil_content    lines  52   r = 0.396 ± 0.054 (SD over repeats)
+  seed_weight_1000 lines  52   r = 0.621 ± 0.038 (SD over repeats)
+  oil_yield      lines  52   r = 0.454 ± 0.051 (SD over repeats)
+
+======================================================================================
+D. RESCALE OUR NUMBERS TO THE SORGHUM PAPER 'ACCURACY' SCALE (r / sqrt(H²))
+======================================================================================
+  seed_yield     predictive ability 0.290 | H² 0.437 | accuracy = r/sqrt(H²) = 0.439
+  oil_content    predictive ability 0.654 | H² 0.721 | accuracy = r/sqrt(H²) = 0.770
+  seed_weight_1000 predictive ability 0.837 | H² 0.827 | accuracy = r/sqrt(H²) = 0.920
+  oil_yield      predictive ability 0.350 | H² not estimated
+
+  Sorghum (Maulana et al. 2023): H²(GY) = 0.23; reported accuracy GY = 0.58 (additive) / 0.67 (full)
+  -> their predictive ability for seed yield = 0.58*sqrt(0.23) = 0.278 (full model 0.321)

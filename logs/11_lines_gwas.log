@@ -1,0 +1,10 @@
+
+### 54_with_confectionery: 54 lines, 81,903 SNP, imputed 2.53 % of cells
+  3_PC_canon     λ = 0.95–1.14;  significant at 5e-8 across all 9 traits: 0
+  no_PC          λ = 0.96–1.12;  significant at 5e-8 across all 9 traits: 28
+
+### 52_oilseed_only: 52 lines, 80,410 SNP, imputed 2.63 % of cells
+  3_PC_canon     λ = 0.95–1.05;  significant at 5e-8 across all 9 traits: 0
+  no_PC          λ = 0.87–1.02;  significant at 5e-8 across all 9 traits: 0
+
+Written: lines_gwas.csv

@@ -1,0 +1,71 @@
+Panel 82,889 SNP; n=156; testable 80,554
+REML on real data: Ka fraction=0.696, Kd=0.228, residual=0.075
+scan in 1.3 s;  lambda=1.23;  tested 67,829
+BEST: chr14:169211003  p_dom=1.174e-06  beta=+3.377
+   chr14: 169211163  p=1.17e-06  beta=+3.38
+   chr14: 169211101  p=1.17e-06  beta=+3.38
+   chr14: 169211066  p=1.17e-06  beta=+3.38
+   chr14: 169211003  p=1.17e-06  beta=+3.38
+   chr17:  34229850  p=1.35e-05  beta=+3.08
+   chr17: 168413763  p=1.87e-05  beta=-7.10
+   chr14: 169230007  p=3.77e-05  beta=-3.14
+   chr14: 169230309  p=3.77e-05  beta=-3.14
+
+null model: b=[62.87  0.78 12.96], s2=65.42
+  [bootstrap] 100/5000 (52 s) thr5%=6.54e-06
+  [bootstrap] 200/5000 (106 s) thr5%=4.98e-06
+  [bootstrap] 300/5000 (156 s) thr5%=5.54e-06
+  [bootstrap] 400/5000 (211 s) thr5%=5.54e-06
+  [bootstrap] 500/5000 (266 s) thr5%=5.54e-06
+  [bootstrap] 600/5000 (323 s) thr5%=5.54e-06
+  [bootstrap] 700/5000 (380 s) thr5%=6.33e-06
+  [bootstrap] 800/5000 (433 s) thr5%=6.06e-06
+  [bootstrap] 900/5000 (486 s) thr5%=5.82e-06
+  [bootstrap] 1000/5000 (538 s) thr5%=5.33e-06
+  [bootstrap] 1100/5000 (590 s) thr5%=4.99e-06
+  [bootstrap] 1200/5000 (641 s) thr5%=4.89e-06
+  [bootstrap] 1300/5000 (697 s) thr5%=4.71e-06
+  [bootstrap] 1400/5000 (749 s) thr5%=4.70e-06
+  [bootstrap] 1500/5000 (807 s) thr5%=4.71e-06
+  [bootstrap] 1600/5000 (867 s) thr5%=4.82e-06
+  [bootstrap] 1700/5000 (921 s) thr5%=4.73e-06
+  [bootstrap] 1800/5000 (976 s) thr5%=4.82e-06
+  [bootstrap] 1900/5000 (1029 s) thr5%=4.82e-06
+  [bootstrap] 2000/5000 (1078 s) thr5%=4.89e-06
+  [bootstrap] 2100/5000 (1129 s) thr5%=4.82e-06
+  [bootstrap] 2200/5000 (1181 s) thr5%=4.73e-06
+  [bootstrap] 2300/5000 (1238 s) thr5%=4.73e-06
+  [bootstrap] 2400/5000 (1288 s) thr5%=4.71e-06
+  [bootstrap] 2500/5000 (1338 s) thr5%=4.74e-06
+  [bootstrap] 2600/5000 (1387 s) thr5%=4.82e-06
+  [bootstrap] 2700/5000 (1439 s) thr5%=4.82e-06
+  [bootstrap] 2800/5000 (1488 s) thr5%=4.74e-06
+  [bootstrap] 2900/5000 (1540 s) thr5%=4.82e-06
+  [bootstrap] 3000/5000 (1589 s) thr5%=4.83e-06
+  [bootstrap] 3100/5000 (1645 s) thr5%=4.83e-06
+  [bootstrap] 3200/5000 (1694 s) thr5%=4.85e-06
+  [bootstrap] 3300/5000 (1746 s) thr5%=4.89e-06
+  [bootstrap] 3400/5000 (1796 s) thr5%=4.93e-06
+  [bootstrap] 3500/5000 (1848 s) thr5%=4.95e-06
+  [bootstrap] 3600/5000 (1896 s) thr5%=4.93e-06
+  [bootstrap] 3700/5000 (1945 s) thr5%=4.98e-06
+  [bootstrap] 3800/5000 (1995 s) thr5%=4.93e-06
+  [bootstrap] 3900/5000 (2047 s) thr5%=4.95e-06
+  [bootstrap] 4000/5000 (2096 s) thr5%=4.95e-06
+  [bootstrap] 4100/5000 (2144 s) thr5%=4.99e-06
+  [bootstrap] 4200/5000 (2194 s) thr5%=5.03e-06
+  [bootstrap] 4300/5000 (2244 s) thr5%=4.99e-06
+  [bootstrap] 4400/5000 (2294 s) thr5%=5.05e-06
+  [bootstrap] 4500/5000 (2343 s) thr5%=5.05e-06
+  [bootstrap] 4600/5000 (2392 s) thr5%=4.99e-06
+  [bootstrap] 4700/5000 (2442 s) thr5%=5.05e-06
+  [bootstrap] 4800/5000 (2494 s) thr5%=5.15e-06
+  [bootstrap] 4900/5000 (2545 s) thr5%=5.15e-06
+  [bootstrap] 5000/5000 (2599 s) thr5%=5.15e-06
+
+========================================================================
+RESULT chr14 (Ka+Kd model with mother effects, 5000 replicates, seed_weight_1000)
+  observed best p_dom = 1.174e-06 @ chr14:169211003
+  [bootstrap  ] thr5%=5.15e-06  thr1%=1.22e-06  genome-wide p=0.0096  -> SIGNIFICANT
+
+Saved: dominance_scan.csv, dominance_null_bootstrap.csv, dominance_null_permutation.csv

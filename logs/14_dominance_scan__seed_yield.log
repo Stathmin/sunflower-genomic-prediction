@@ -1,0 +1,38 @@
+Panel 82,889 SNP; n=156; testable 80,554
+REML on real data: Ka fraction=0.499, Kd=0.095, residual=0.406
+scan in 1.2 s;  lambda=1.16;  tested 67,829
+BEST: chr1:111654081  p_dom=3.566e-05  beta=+6.649
+   chr 1: 111654081  p=3.57e-05  beta=+6.65
+   chr 1: 111653986  p=4.11e-05  beta=+5.17
+   chr 3: 157536258  p=6.20e-05  beta=-1.79
+   chr 3: 157536264  p=6.20e-05  beta=-1.79
+   chr 7: 129413177  p=6.50e-05  beta=+1.49
+   chr14: 169208887  p=1.43e-04  beta=+2.66
+   chr 9: 121278222  p=1.44e-04  beta=+7.47
+   chr14: 169208935  p=1.52e-04  beta=+2.28
+
+null model: b=[3.19 0.08 0.03], s2=0.11
+  [bootstrap] 100/500 (78 s) thr5%=5.19e-06
+  [bootstrap] 200/500 (149 s) thr5%=6.30e-06
+  [bootstrap] 300/500 (222 s) thr5%=5.48e-06
+  [bootstrap] 400/500 (308 s) thr5%=5.52e-06
+  [bootstrap] 500/500 (391 s) thr5%=5.99e-06
+  [permutation] 100/500 (104 s) thr5%=8.65e-06
+  [permutation] 200/500 (168 s) thr5%=2.95e-06
+  [permutation] 300/500 (230 s) thr5%=3.72e-06
+  [permutation] 400/500 (294 s) thr5%=3.84e-06
+  [permutation] 500/500 (359 s) thr5%=3.75e-06
+  [permutation_within] 100/500 (64 s) thr5%=4.29e-06
+  [permutation_within] 200/500 (129 s) thr5%=3.78e-06
+  [permutation_within] 300/500 (194 s) thr5%=3.92e-06
+  [permutation_within] 400/500 (257 s) thr5%=3.92e-06
+  [permutation_within] 500/500 (300 s) thr5%=4.30e-06
+
+========================================================================
+RESULT chr14 (Ka+Kd model with mother effects, 500 replicates, seed_yield)
+  observed best p_dom = 3.566e-05 @ chr1:111654081
+  [bootstrap  ] thr5%=5.99e-06  thr1%=2.63e-06  genome-wide p=0.2914  -> NOT SIGNIFICANT
+  [permutation] thr5%=3.75e-06  thr1%=4.85e-07  genome-wide p=0.3433  -> NOT SIGNIFICANT
+  [permutation_within] thr5%=4.30e-06  thr1%=9.27e-07  genome-wide p=0.3074  -> NOT SIGNIFICANT
+
+Saved: dominance_scan_seed_yield.csv, dominance_null_bootstrap_seed_yield.csv, dominance_null_permutation_seed_yield.csv
