@@ -15,22 +15,14 @@ What it does:
 Output: phase8_output/line_phenotypes.parquet, hybrids_tidy_v2.parquet
 """
 
-import sys
-from pathlib import Path as _PathBoot
-_p = _PathBoot(__file__).resolve().parent
-while _p != _p.parent and not (_p / "paths.py").exists():
-    _p = _p.parent
-if str(_p) not in sys.path:
-    sys.path.insert(0, str(_p))
-from paths import DEPOSIT, WORK, CALLING, OUT, INTERMEDIATE, MODELS, use_models, work, calling, en_table, en_ids, en_id, is_line_id, ru_col
-use_models()
-from pathlib import Path
-import re
-import pandas as pd
+
 import numpy as np
+import pandas as pd
 from openpyxl import load_workbook
 
-ROOT = work()  # undeposited working tree
+from sunflower.paths import en_id, en_table, is_line_id, require_work, ru_col
+
+ROOT = require_work()  # undeposited working tree
 NEW  = ROOT / "6_новые данные_ответы + исходники +vcf"
 OUT  = ROOT / "phase8_output"
 OUT.mkdir(exist_ok=True)
@@ -120,8 +112,7 @@ for row in data[hdr_idx+1:]:
     try: y = int(row[0])
     except (ValueError, TypeError): continue
     if y < 2020 or y > 2030: continue
-    li_idx = 0
-    for c in row[1:]:
+    for li_idx, c in enumerate(row[1:]):
         if li_idx >= len(li_names): break
         if c is not None and pd.notna(c):
             try:
@@ -129,7 +120,6 @@ for row in data[hdr_idx+1:]:
                                 "value": float(c), "replicate": np.nan,
                                 "source": "lines_summary_v2"})
             except (ValueError, TypeError): pass
-        li_idx += 1
 
 # Sheet 'm1000 seeds': same layout, first column is year, the rest are line IDs
 ws = wb["м1000шт"]
@@ -210,7 +200,7 @@ if mask.sum() > 0:
     hyb_v2.loc[mask, "value"] = 20.9
     print(f"\nCorrected: VA761A × LI19/2022/head_diameter: 29.75 → 20.9 ({mask.sum()} rows)")
 else:
-    print(f"\nNOT FOUND VA761A × LI19/2022 head_diameter 29.75")
+    print("\nNOT FOUND VA761A × LI19/2022 head_diameter 29.75")
 
 
 # Save

@@ -1,5 +1,9 @@
 # Verification run
 
+> **Pre-rework log.** This file records the original custom-engine run. The
+> rework (GEMMA / PLINK / R-sommer) and its verification are documented in
+> `docs/REWORK.md`.
+
 Date: 26 September 2026. Environment: Python 3.11.16; numpy 2.4.6, scipy 1.17.1, pandas 2.3.3, pyarrow 25.0.1, statsmodels 0.15.0, matplotlib 3.11.1, Pillow 12.3.0, openpyxl 3.1.5. Linux, 16 cores.
 
 Every script in `scripts/` (not `scripts/provenance/`) was run on this repository; the logs are in this folder, and `run_summary.json` lists the exit status and run time of each. The tables the scripts wrote were compared with the tables from which the article was prepared.

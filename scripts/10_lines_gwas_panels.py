@@ -1,179 +1,157 @@
-# -*- coding: utf-8 -*-
-"""Panels from the merged set, PCA, K, EMMAX and BLINK, key loci.
-Results are written to CSV."""
-import sys
-from pathlib import Path as _PathBoot
-_p = _PathBoot(__file__).resolve().parent
-while _p != _p.parent and not (_p / "paths.py").exists():
-    _p = _p.parent
-if str(_p) not in sys.path:
-    sys.path.insert(0, str(_p))
-from paths import DEPOSIT, WORK, CALLING, OUT, INTERMEDIATE, MODELS, use_models, work, calling, en_table, en_ids, en_id, is_line_id
-use_models()
-import numpy as np, pandas as pd, pathlib, sys, time, json
-from scipy import stats, optimize
-import warnings; warnings.filterwarnings("ignore")
+"""Association scans of the lines on alternative marker panels.
 
-ROOT = DEPOSIT
-D = DEPOSIT
-SCR = OUT
-from blink import blink
+Additive scans are run by GEMMA (``-lmm 4``, the EMMAX-equivalent score test).
+The reported loci are no longer hard-coded: the script writes the top hits of
+each scan, and an optional ``--loci`` file can be supplied to annotate known
+positions.
+"""
+from __future__ import annotations
+
+import argparse
+import os
+import tempfile
+from concurrent.futures import ThreadPoolExecutor
+
+import numpy as np
+import pandas as pd
+
+from sunflower.external import prepare_panel, run_gemma
+from sunflower.genotypes import (
+    filter_panel,
+    load_genotypes,
+    standardized_pca,
+    vanraden_kinship,
+)
+from sunflower.gwas import loci_table, scan_summary, top_hits
+from sunflower.io import line_trait_means, write_csv
+from sunflower.paths import TABLES
 
 CONF = {"LI29", "LI30"}
-TRAITS = ["oil_content", "hull_content", "seed_weight_1000", "plant_height", "head_diameter",
-          "days_emergence_flowering", "days_central_to_side", "autofertility_self", "autofertility_open"]
+TRAITS = [
+    "oil_content", "hull_content", "seed_weight_1000", "plant_height",
+    "head_diameter", "days_emergence_flowering", "days_central_to_side",
+    "autofertility_self", "autofertility_open",
+]
+PANELS = [
+    ("call rate >= 0.9", 0.9, False),
+    ("call rate >= 0.8", 0.8, False),
+    ("call rate >= 0.5", 0.5, False),
+    ("full_coverage", 1.0, True),
+]
 
-# ---------------------------------------------------------------- data
-z = np.load(D / "merged_genotypes.npz", allow_pickle=True)
-G = z["genotypes"].astype(float); G[G < 0] = np.nan
-samp = en_ids(z["samples"].astype(str))
-chrom_raw = [str(c) for c in z["chrom"]]
-def cn(c):
-    try: return int(c.replace("CM00", "").replace(".2", "")) - 7889
-    except Exception: return -1
-chrom = np.array([cn(c) for c in chrom_raw])
-pos = np.asarray(z["pos"]).astype(np.int64)
 
-lines54 = [s for s in samp if is_line_id(s)]
-lines52 = [s for s in lines54 if s not in CONF]
+def _audit(data, lines: list[str], call_rate: float, full: bool) -> dict:
+    columns = [data.column(line) for line in lines]
+    raw = data.dosage[:, columns]
+    with np.errstate(invalid="ignore", divide="ignore"):
+        counts = np.sum(~np.isnan(raw), axis=1)
+        call = counts / raw.shape[1]
+        af = np.divide(
+            np.nansum(raw, axis=1), 2.0 * counts,
+            out=np.full(raw.shape[0], np.nan), where=counts > 0,
+        )
+        minor = np.minimum(af, 1.0 - af)
+    on_chromosome = (data.chrom >= 1) & (data.chrom <= 17)
+    step1 = on_chromosome & ((call == 1.0) if full else (call >= call_rate))
+    step2 = step1 & (minor >= 0.05)
+    return {
+        "n_start": len(call),
+        "drop_chr": int(np.sum(~on_chromosome)),
+        "drop_cr": int(np.sum(on_chromosome) - np.sum(step1)),
+        "drop_maf": int(np.sum(step1) - np.sum(step2)),
+        "missing": float(np.isnan(raw[step2]).mean()) if step2.any() else 0.0,
+    }
 
-ph = en_table(pd.read_parquet(OUT / "line_phenotypes.parquet"))
-def pheno(lines):
-    out = {}
-    for tr in TRAITS:
-        s = ph[ph["trait"] == tr].groupby("genotype")["value"].mean()
-        out[tr] = np.array([s.get(l, np.nan) for l in lines])
-    return out
 
-KEY_LOCI = [("chr8:782740", 8, 782740), ("chr17:50245155", 17, 50245155),
-            ("chr17:50459845", 17, 50459845), ("chr5:~90.15M", 5, 90150000),
-            ("chr7:~144.16M", 7, 144160000)]
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--jobs", type=int, default=max(1, os.cpu_count() or 1))
+    parser.add_argument("--loci", type=str, default=None,
+                        help="optional CSV with locus,chr,pos[,window] annotations")
+    args = parser.parse_args()
 
-# ---------------------------------------------------------------- tools
-def vanraden(Gm):
-    p = Gm.mean(1) / 2
-    Zc = Gm - 2 * p[:, None]
-    return (Zc.T @ Zc) / (2 * np.sum(p * (1 - p)))
+    data = load_genotypes()
+    lines54 = data.lines
+    lines52 = [line for line in lines54 if line not in CONF]
+    means = line_trait_means()
+    loci = pd.read_csv(args.loci) if args.loci else None
 
-def pca(Gm, standardise=True):
-    A = Gm.T.astype(float); A = A - A.mean(0, keepdims=True)
-    if standardise:
-        sd = A.std(0, ddof=0); sd[sd < 1e-12] = 1.0; A = A / sd
-    U, S, Vt = np.linalg.svd(A, full_matrices=False)
-    return U * S, S ** 2 / np.sum(S ** 2)
+    rows_panel, rows_scan, rows_hits, rows_loci = [], [], [], []
+    with tempfile.TemporaryDirectory(prefix="sunflower-panels-") as tmp:
+        for index, (panel_name, call_rate, full) in enumerate(PANELS):
+            for line_name, lines in (("54_lines", lines54), ("52_lines", lines52)):
+                panel = filter_panel(data, lines, call_rate=call_rate, maf=0.05)
+                audit = _audit(data, lines, call_rate, full)
+                scores, variance = standardized_pca(panel.dosage, 3)
+                conf = np.array([1.0 if line in CONF else 0.0 for line in lines])
+                corr_pc1 = (
+                    abs(np.corrcoef(scores[:, 0], conf)[0, 1]) if conf.std() > 0 else np.nan
+                )
+                rows_panel.append({
+                    "panel": panel_name, "n_lines": line_name,
+                    "n_markers": panel.n_markers,
+                    "dropped_cr": audit["drop_cr"], "dropped_maf": audit["drop_maf"],
+                    "missingness": audit["missing"],
+                    "PC1": variance[0] * 100, "PC2": variance[1] * 100,
+                    "PC3": variance[2] * 100, "corr_PC1_type": corr_pc1,
+                    "bonferroni": 0.05 / panel.n_markers,
+                })
 
-def reml_vc(y, U, eig, X):
-    yr = U.T @ y; Xr = U.T @ X; n, pn = len(y), X.shape[1]
-    def nll(th):
-        s2g, s2e = np.exp(th)
-        w = 1.0 / (s2g * eig + s2e)
-        Xw = Xr * np.sqrt(w)[:, None]; yw = yr * np.sqrt(w)
-        b, *_ = np.linalg.lstsq(Xw, yw, rcond=None); r = yw - Xw @ b
-        _, ldx = np.linalg.slogdet(Xw.T @ Xw)
-        return 0.5 * (-np.sum(np.log(w)) + ldx + (n - pn) * np.log(max(r @ r, 1e-300)))
-    v = np.var(y); best = None
-    for st in ([0.5*v, 0.5*v], [0.9*v, 0.1*v], [0.1*v, 0.9*v]):
-        r = optimize.minimize(nll, np.log(st), method="Nelder-Mead",
-                              options=dict(maxiter=600, xatol=1e-7, fatol=1e-7))
-        if best is None or r.fun < best.fun: best = r
-    return np.exp(best.x)
+                prepared = prepare_panel(
+                    panel, tmp, prefix=f"panel_{index}_{line_name}",
+                    kinship=vanraden_kinship(panel.dosage),
+                )
+                values = {trait: means[trait].reindex(lines).to_numpy(float)
+                          for trait in TRAITS}
 
-def emmax(y, K, Gm, PCs):
-    ok = ~np.isnan(y)
-    y = y[ok]; Ks = K[np.ix_(ok, ok)]; Gs = Gm[:, ok]
-    X = np.ones((len(y), 1))
-    if PCs is not None: X = np.column_stack([X, PCs[ok]])
-    eig, U = np.linalg.eigh(Ks); eig = np.maximum(eig, 1e-9)
-    s2g, s2e = reml_vc(y, U, eig, X)
-    w = np.sqrt(1.0 / (s2g * eig + s2e)); w = w / w.mean()
-    yw = (U.T @ y) * w; Xw = (U.T @ X) * w[:, None]
-    Q, _ = np.linalg.qr(Xw)
-    yr = yw - Q @ (Q.T @ yw)
-    Gw = (Gs @ U) * w[None, :]
-    Gr = Gw - (Gw @ Q) @ Q.T
-    num = Gr @ yr; den = np.einsum("ij,ij->i", Gr, Gr)
-    okd = den > 1e-12 * max(den.max(), 1e-300)
-    beta = np.zeros(len(den)); beta[okd] = num[okd] / den[okd]
-    rss = (yr @ yr) - beta ** 2 * den
-    df = len(y) - X.shape[1] - 1
-    se = np.sqrt(np.maximum(rss, 1e-300) / df / np.maximum(den, 1e-300))
-    t = np.where(okd & (se > 0), beta / se, 0.0)
-    pv = np.full(len(den), np.nan); pv[okd] = 2 * stats.t.sf(np.abs(t[okd]), df)
-    v = ~np.isnan(pv)
-    lam = np.median(stats.chi2.isf(pv[v], 1)) / stats.chi2.ppf(0.5, 1) if v.sum() else np.nan
-    return pv, lam
+                def scan(trait: str, prepared=prepared, values=values,
+                         scores=scores, index=index, line_name=line_name):
+                    label = f"p{index}_{line_name}_{trait}"
+                    result = run_gemma(
+                        prepared, values[trait], covariates=scores[:, :3], label=label,
+                    )
+                    return trait, result
 
-# ---------------------------------------------------------------- panels
-def build_panel(lines, thr, full=False):
-    idx = [samp.index(l) for l in lines]
-    Gl = G[:, idx]
-    cr = np.mean(~np.isnan(Gl), 1)
-    ch_ok = (chrom >= 1) & (chrom <= 17)
-    step1 = ch_ok & ((cr == 1.0) if full else (cr >= thr))
-    af = np.nanmean(Gl, 1) / 2; maf = np.minimum(af, 1 - af)
-    step2 = step1 & (maf >= 0.05)
-    Gp = Gl[step2]
-    miss = float(np.isnan(Gp).mean())
-    Gi = np.where(np.isnan(Gp), np.nanmean(Gp, 1, keepdims=True), Gp)
-    return dict(mask=step2, G=Gi, n_start=len(cr), drop_chr=int(np.sum(~ch_ok)),
-                drop_cr=int(np.sum(ch_ok) - np.sum(step1)),
-                drop_maf=int(np.sum(step1) - np.sum(step2)),
-                m=int(step2.sum()), miss=miss, lines=lines)
+                with ThreadPoolExecutor(max_workers=args.jobs) as pool:
+                    results = list(pool.map(scan, TRAITS))
 
-PANELS = [("call rate ≥ 0.9", 0.9, False), ("call rate ≥ 0.8", 0.8, False),
-          ("call rate ≥ 0.5", 0.5, False), ("full_coverage", 1.0, True)]
+                for trait, result in results:
+                    assoc = result["assoc"]
+                    summary = scan_summary(assoc, panel.n_markers)
+                    rows_scan.append({
+                        "panel": panel_name, "n_lines": line_name, "trait": trait,
+                        "model": "EMMAX", "n_markers": panel.n_markers,
+                        "lam": summary["lambda"],
+                        "n_sig_5e8": summary["n_p<5e-8"],
+                        "n_sig_bonf": summary["n_bonf"], "min_p": summary["min_p"],
+                    })
+                    hits = top_hits(assoc, 10)
+                    for rank, hit in hits.iterrows():
+                        rows_hits.append({
+                            "panel": panel_name, "n_lines": line_name,
+                            "trait": trait, "model": "EMMAX", "rank": rank + 1,
+                            **hit.to_dict(),
+                        })
+                    if loci is not None:
+                        table = loci_table(assoc, loci)
+                        for _, hit in table.iterrows():
+                            rows_loci.append({
+                                "panel": panel_name, "n_lines": line_name,
+                                "trait": trait, "model": "EMMAX", **hit.to_dict(),
+                            })
+                print(
+                    f"{panel_name:18s} {line_name} m={panel.n_markers:6d} "
+                    f"miss={audit['missing'] * 100:5.2f}% PC1={variance[0] * 100:5.2f}%",
+                    flush=True,
+                )
 
-rows_panel, rows_gwas, rows_loci = [], [], []
-RUN_BLINK = "--blink" in sys.argv
-for pname, thr, full in PANELS:
-    for lset, lname in ((lines54, "54_lines"), (lines52, "52_lines")):
-        t0 = time.time()
-        P = build_panel(lset, thr, full)
-        Gi = P["G"]; m = P["m"]
-        PCs, var = pca(Gi, True)
-        conf = np.array([1.0 if l in CONF else 0.0 for l in lset])
-        r_pc1 = abs(np.corrcoef(PCs[:, 0], conf)[0, 1]) if conf.std() > 0 else np.nan
-        K = vanraden(Gi)
-        rows_panel.append(dict(panel=pname, n_lines=lname, n_markers=m,
-                               dropped_cr=P["drop_cr"], dropped_maf=P["drop_maf"],
-                               missingness=P["miss"], PC1=var[0]*100, PC2=var[1]*100,
-                               PC3=var[2]*100, corr_PC1_type=r_pc1,
-                               bonferroni=0.05/m))
-        phen = pheno(lset)
-        sub_chrom = chrom[P["mask"]]; sub_pos = pos[P["mask"]]
-        for tr in TRAITS:
-            y = phen[tr]
-            if np.sum(~np.isnan(y)) < 20: continue
-            pv, lam = emmax(y, K, Gi, PCs[:, :3])
-            n5 = int(np.nansum(pv < 5e-8)); nb = int(np.nansum(pv < 0.05 / m))
-            rec = dict(panel=pname, n_lines=lname, trait=tr, model="EMMAX",
-                       n_markers=m, lam=lam, n_sig_5e8=n5, n_sig_bonf=nb,
-                       min_p=float(np.nanmin(pv)))
-            rows_gwas.append(rec)
-            for nm, ch, po in KEY_LOCI:
-                hit = np.where((sub_chrom == ch) & (np.abs(sub_pos - po) <= (200000 if "~" in nm else 0)))[0]
-                rows_loci.append(dict(panel=pname, n_lines=lname, trait=tr, locus=nm,
-                                      present=len(hit) > 0,
-                                      p=float(np.nanmin(pv[hit])) if len(hit) else np.nan,
-                                      markers_in_window=len(hit)))
-            if RUN_BLINK:
-                try:
-                    res = blink(y, Gi, sub_chrom, sub_pos, PCs[:, :3])
-                    pb = res["pvals"]
-                    rows_gwas.append(dict(panel=pname, n_lines=lname, trait=tr, model="BLINK",
-                                          n_markers=m, lam=np.nan,
-                                          n_sig_5e8=int(np.nansum(pb < 5e-8)),
-                                          n_sig_bonf=int(np.nansum(pb < 0.05 / m)),
-                                          min_p=float(np.nanmin(pb))))
-                except Exception as e:
-                    rows_gwas.append(dict(panel=pname, n_lines=lname, trait=tr, model="BLINK",
-                                          n_markers=m, lam=np.nan, n_sig_5e8=-1, n_sig_bonf=-1,
-                                          min_p=np.nan))
-        print(f"{pname:18s} {lname} m={m:6d} miss={P['miss']*100:5.2f}% "
-              f"PC1={var[0]*100:5.2f}% corr={r_pc1 if not np.isnan(r_pc1) else float('nan'):.3f} "
-              f"| {time.time()-t0:.0f} s", flush=True)
+    write_csv(pd.DataFrame(rows_panel), "lines_gwas_panels.csv")
+    write_csv(pd.DataFrame(rows_scan), "lines_gwas_panels_scans.csv")
+    write_csv(pd.DataFrame(rows_hits), "lines_gwas_panels_hits.csv")
+    if loci is not None:
+        write_csv(pd.DataFrame(rows_loci), "lines_gwas_panels_loci.csv")
+    print(f"\nwritten to {TABLES}")
 
-pd.DataFrame(rows_panel).to_csv(SCR / "lines_gwas_panels.csv", index=False, encoding="utf-8-sig")
-pd.DataFrame(rows_gwas).to_csv(SCR / "lines_gwas_panels_scans.csv", index=False, encoding="utf-8-sig")
-pd.DataFrame(rows_loci).to_csv(SCR / "lines_gwas_panels_loci.csv", index=False, encoding="utf-8-sig")
-print("\nwritten to", SCR)
+
+if __name__ == "__main__":
+    main()

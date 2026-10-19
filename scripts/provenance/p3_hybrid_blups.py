@@ -15,21 +15,17 @@ Output: phase14_reps_pheno/. Old files are left untouched.
 """
 from __future__ import annotations
 
-import sys
-from pathlib import Path as _PathBoot
-_p = _PathBoot(__file__).resolve().parent
-while _p != _p.parent and not (_p / "paths.py").exists():
-    _p = _p.parent
-if str(_p) not in sys.path:
-    sys.path.insert(0, str(_p))
-from paths import DEPOSIT, WORK, CALLING, OUT, INTERMEDIATE, MODELS, use_models, work, calling, en_table, en_ids, en_id, is_line_id
-use_models()
-import warnings, re
-from pathlib import Path
-import numpy as np, pandas as pd
+import re
+import warnings
+
+import numpy as np
+import pandas as pd
 import statsmodels.formula.api as smf
+
+from sunflower.paths import en_id, require_work
+
 warnings.filterwarnings("ignore")
-ROOT = work()  # undeposited working tree
+ROOT = require_work()  # undeposited working tree
 F=ROOT/"1_данные из вниимка"/"гибриды по повт-тям 2022-2023 итог гг..xlsx"
 OUT=ROOT/"phase14_reps_pheno"; OUT.mkdir(exist_ok=True)
 
@@ -106,7 +102,7 @@ def qc_outliers(df,trait,thr=4.0):
         m=smf.ols(f"Q('{trait}') ~ C(year)+C(mother)+C(father)+C(year):C(rep)",data=d).fit()
         r=m.resid; sr=(r-r.mean())/r.std()
         out=d.index[np.abs(sr)>thr]
-    except Exception:
+    except Exception:  # noqa: BLE001 - QC is best-effort
         out=[]
     for i in out:
         removed.append({"trait":trait,"mother":df.loc[i,"mother"],"father":df.loc[i,"father"],
@@ -129,7 +125,6 @@ plot_long=pd.concat([prod_long,bio_long],ignore_index=True).dropna(subset=["valu
 plot_long.to_parquet(OUT/"hybrid_plot_level.parquet")
 
 # ---- 3. variance components + repeatability + H² + BLUP ----
-import statsmodels.api as sm
 rows=[];blups={}
 for trait in ["seed_yield","oil_content","seed_weight_1000","plant_height","head_diameter"]:
     d=plot_long[plot_long["trait"]==trait].copy()
@@ -152,7 +147,7 @@ for trait in ["seed_yield","oil_content","seed_weight_1000","plant_height","head
             "plot_repeatability":round(repeatability,3),"H2_of_mean":round(H2_mean,3),
             "n_hybrids":d["g"].nunique(),"n_plots":len(d)})
         print(f"  {trait}: σ²g={s2g:.3f} σ²e={s2e:.3f} repeat={repeatability:.2f} H²(mean)={H2_mean:.2f}")
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001 - continue with other traits
         print(f"  {trait}: mixedlm error {e}")
 vc=pd.DataFrame(rows);vc.to_csv(OUT/"222_variance_components_h2.csv",index=False,encoding="utf-8-sig")
 

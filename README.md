@@ -11,30 +11,44 @@ Raw GBS reads are available from the corresponding author on reasonable request.
 ## Layout
 
 ```
-paths.py        paths used by all scripts
-names.py        English names of traits, lines and testers
+src/sunflower/  installed package: paths, I/O, genotypes, prediction, variance, external tools
+scripts/        numbered analysis scripts (thin entry points)
+tests/          pytest suite, including GEMMA/PLINK and rrBLUP cross-checks
+docs/           EXTERNAL_TOOLS.md and REWORK.md
+paths.py        compatibility shim for sunflower.paths
+names.py        compatibility shim for sunflower.names
 tables/         input tables and the tables written by the scripts
 genotypes/      genotype call sets
-scripts/        analysis scripts, numbered in the order they are run
-scripts/models/ shared model code (imported by the scripts)
 scripts/provenance/  how the input tables were built from undeposited primary files
 figures/        written by the figure script
-logs/           output of the verification run
+logs/           pre-rework verification run (see docs/REWORK.md)
+pyproject.toml  Python dependencies (uv)
+uv.lock         locked Python environment
+pixi.toml       native GEMMA/PLINK/R environment
 ```
 
 ## How to run
 
-Python 3.11 or later.
+Python 3.11 or later; GEMMA, PLINK 1.9 and R with `sommer` are required by the
+association, pruning and variance-component scripts. The Python side is managed
+with uv:
 
-```
-python -m venv .venv
-. .venv/bin/activate        # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-python scripts/06_gca_prediction.py
+```bash
+uv sync --extra dev
+uv run python scripts/06_gca_prediction.py
 ...
 ```
 
-Scripts can be run from any directory. They read from `tables/` and `genotypes/` and write to `tables/` and `figures/`. Each script is independent except where noted. Running a script overwrites its own outputs with identical values.
+The native tools are installed with `pixi install` (or apt/conda), and the R
+packages with `Rscript src/sunflower/r/install.R`; see
+`docs/EXTERNAL_TOOLS.md`. The old `requirements.txt` was removed; `pyproject.toml`
+and `uv.lock` are authoritative.
+
+Scripts read `tables/` and `genotypes/` from the current directory and write to
+`tables/` and `figures/`. Run them from the repository root, or set
+`SUNFLOWER_ROOT`. Scripts that scan many panels/traits accept `--jobs`; the run
+times below are from the original single-threaded verification run and are
+superseded by the parallel runs. Each script is independent except where noted.
 
 ## Scripts
 
@@ -43,29 +57,29 @@ Scripts can be run from any directory. They read from `tables/` and `genotypes/`
 | `01_hybrid_blups_biometry.py` | hybrid_blup_phenotypes_with_biometry.csv, hybrid_blup_biometry.txt | hybrid BLUPs of plant height and head diameter (input of script 14) | 13 s |
 | `02_line_heritability.py` | line_heritability.csv, .txt | Table 2 (heritability of the line means) | 86 s |
 | `03_variance_components.py` | variance_components.csv, .txt | H² of the hybrid means used as the upper bound √H² (Figure 2) | 6 min |
-| `04_baker_ratio_intervals.py` | baker_ratio_intervals.json | module used by script 05 | 22 min |
+| `04_baker_ratio_intervals.py` | baker_ratio_intervals.json | profile-likelihood intervals of Baker's ratio (sommer) | 22 min (old) |
 | `05_without_confectionery_lines.py` | without_confectionery_lines.csv, .txt | H² of the 156 hybrids with oilseed fathers (upper bound in Figure 2) | 38 min |
-| `06_gca_prediction.py` | learning_curve.csv, prediction_gca_repeated_5fold.csv | Table 1 and Figure 2B (all traits on the 52 oilseed lines): prediction of a held-out paternal line, the learning curve (mean and SD over draws) and repeated five-fold cross-validation (Section 3.2) | 4 s |
+| `06_gca_prediction.py` | learning_curve.csv, prediction_gca_repeated_5fold.csv, prediction_gca_leave_one_out.csv | Table 1 and Figure 2B (all traits on the 52 oilseed lines): prediction of a held-out paternal line, the learning curve (mean and SD over draws) and repeated five-fold cross-validation (Section 3.2) | 4 s |
 | `07_prediction_within_tester.py` | prediction_within_tester_5fold.csv, .txt | single-hybrid prediction within tester, 5-fold (Section 3.2) | 14 s |
 | `08_prediction_leave_one_line_out.py` | prediction_leave_one_line_out.csv, .txt | single-hybrid prediction, leave-one-line-out (Section 3.2, Figure 2A) | 24 s |
 | `09_parental_distance.py` | printed to the log | parental genetic distance and hybrid yield on the 82,889-SNP set, with a mixed model and paternal-line means allowing for the dependence among hybrids (Section 3.3, Figure 3) | 13 s |
-| `10_lines_gwas_panels.py` | lines_gwas_panels.csv, lines_gwas_panels_scans.csv, lines_gwas_panels_loci.csv | association scans of the lines on alternative marker panels | 3 min |
-| `11_lines_gwas.py` | lines_gwas.csv | EMMAX scans of the 52 oilseed lines (Section 3.4) | 68 s |
-| `12_use_type_artefact.py` | use_type_artefact.csv | scans of the 54 lines with and without the confectionery lines (Section 3.4) | 13 min |
-| `13_use_type_artefact_pc.py` | use_type_artefact_pc.csv | the same with principal-component covariates | 13 min |
-| `14_dominance_scan.py` | dominance_scan.csv, dominance_null_bootstrap.csv, dominance_null_permutation.csv, dominance_null_permutation_within.csv | dominance-deviation scan for 1000-seed weight with three null distributions: parametric bootstrap, free permutation and permutation within tester (Section 3.5, Figure 4) | 25 min (500 replicates); `DOM_NREP=5000` reproduces the published nulls for 1000-seed weight, about 2 h per null |
+| `10_lines_gwas_panels.py` | lines_gwas_panels.csv, lines_gwas_panels_scans.csv, lines_gwas_panels_hits.csv | GEMMA association scans on alternative marker panels; top hits; optional `--loci` annotation | 3 min (old) |
+| `11_lines_gwas.py` | lines_gwas.csv | GEMMA LMM scans of the 52 oilseed lines (Section 3.4) | 68 s (old) |
+| `12_use_type_artefact.py` | use_type_artefact.csv | GEMMA scans of the 54 lines with and without the confectionery lines, with a bootstrap threshold (Section 3.4) | 13 min (old) |
+| `13_use_type_artefact_pc.py` | use_type_artefact_pc.csv | the same with principal-component covariates | 13 min (old) |
+| `14_dominance_scan.py` | dominance_scan.csv, dominance_null_bootstrap.csv, dominance_null_permutation.csv, dominance_null_permutation_within.csv | two-kernel dominance-deviation scan for 1000-seed weight with three null distributions: parametric bootstrap, free permutation and permutation within tester (Section 3.5, Figure 4); `--jobs` parallelises the replicates | 25 min (500 replicates, old single CPU); `DOM_NREP=5000` reproduces the published nulls |
 | `14_dominance_scan.py --trait oil_content` | dominance_*_oil_content.csv | the same scan for oil content (not significant) | 25 min |
 | `14_dominance_scan.py --trait seed_yield` | dominance_*_seed_yield.csv | the same scan for seed yield (not significant) | 25 min |
 | `14_dominance_scan.py --trait plant_height --phenotypes hybrid_blup_phenotypes_with_biometry.csv` | dominance_*_plant_height.csv | the same scan for plant height (not significant) | 21 min |
 | `14_dominance_scan.py --trait head_diameter --phenotypes hybrid_blup_phenotypes_with_biometry.csv` | dominance_*_head_diameter.csv | the same scan for head diameter (not significant) | 21 min |
 | `15_dominance_scan_no_imputation.py` | dominance_scan_no_imputation.csv, dominance_null_no_imputation.csv | Table S2: the Chr14 effect on the call set without missing genotypes | 5 min |
-| `16_power_and_hybrid_lambda.py` | reported_numbers_check.csv | power of the scans and λ of the hybrid scans (Section 3.4); recomputes the reported numbers | 39 s |
+| `16_power_and_hybrid_lambda.py` | reported_numbers_check.csv | power, λ of the hybrid scans (GEMMA) and the reported numbers (sommer); recomputes the checks | 39 s |
 | `17_figures.py` | figures/Figure1–4 (.png, .tiff) | Figures 1–4 | 15 s |
 | `18_chr14_ld.py` | chr14_locus_ld.csv | linkage disequilibrium among the four SNPs of the Chr14 locus (Section 3.5) | 2 s |
-| `19_ld_pruning.py` | ld_pruning_sensitivity.csv | GBLUP of paternal GCA after pruning the markers for linkage disequilibrium (Sections 2.5 and 3.2) | 9 s |
+| `19_ld_pruning.py` | ld_pruning_sensitivity.csv | GBLUP of paternal GCA after PLINK 1.9 `--indep-pairwise` pruning (Sections 2.5 and 3.2) | 9 s |
 | `20_blup_within_fold.py` | prediction_gca_sensitivity.csv | leave-one-line-out prediction of paternal GCA with hybrid BLUPs refitted inside each fold, and with the nine removed plot values put back (Sections 3.2 and 4.5) | 2 min |
 
-Run times are from the verification run on a 16-core PC, several scripts in parallel. Scripts that run a figure or reuse another script's output are run last: `05` needs `04`; `17` needs `05`, `08` and `14`; `18` needs `14`.
+Run times are from the pre-rework verification run; scripts that scan many panels/traits now accept `--jobs`. Scripts that run a figure or reuse another script's output are run last: `05` needs `04`; `17` needs `05`, `06`, `08` and `14`; `18` needs `14`.
 
 `scripts/provenance/` documents how the input tables were built from the breeders' field workbooks and from the two call sets before merging. These files are not deposited; the scripts are included so that each step can be read. To run them, set `SUNFLOWER_WORK` in a local `.env` file (see `.env.example`). These scripts keep the original Russian names of the undeposited files, folders and worksheets, and the Russian labels they match inside those files (for example `Фенотипы.xlsx`, sheet `Гибриды_делянки`), because the scripts must find them verbatim. All other scripts and tables are in English.
 
@@ -98,11 +112,12 @@ Run times are from the verification run on a 16-core PC, several scripts in para
 | `line_heritability.csv` | 9 × 15 | heritability of the four-year line means |
 | `line_phenotypes.parquet` | 7687 × 7 | line phenotypes 2021–2024, long format |
 | `line_phenotypes_as_delivered.parquet` | 7688 × 7 | line phenotypes as delivered |
-| `lines_gwas.csv` | 36 × 9 | EMMAX scans of the lines |
+| `lines_gwas.csv` | 36 × 9 | GEMMA LMM scans of the lines |
 | `lines_gwas_panels.csv` | 8 × 11 | marker panels compared in script 10 |
-| `lines_gwas_panels_loci.csv` | 360 × 7 | p-values of the reported loci on each panel |
-| `lines_gwas_panels_scans.csv` | 72 × 9 | scans on each panel |
+| `lines_gwas_panels_hits.csv` | 720 × 10 | top 10 markers per panel/trait (no hard-coded loci) |
+| `lines_gwas_panels_scans.csv` | 72 × 9 | GEMMA scans on each panel |
 | `prediction_accuracy_5fold.csv` | 4 × 6 | GBLUP predictive ability for single hybrids, 5-fold by paternal line |
+| `prediction_gca_leave_one_out.csv` | 4 × 3 | leave-one-line-out paternal GCA accuracy used by Figure 2 (script 06) |
 | `prediction_leave_one_line_out.csv` | 4 × 15 | single-hybrid predictive ability, leave-one-line-out |
 | `prediction_within_tester_5fold.csv` | 4 × 14 | the same within each tester |
 | `reported_numbers_check.csv` | 25 × 4 | numbers reported in the paper recomputed from the deposit |
@@ -130,7 +145,12 @@ Traits: `seed_yield` (t/ha), `oil_content` (%), `seed_weight_1000` (g), `oil_yie
 
 ## Verification
 
-All scripts except `scripts/provenance/` were run on this deposit on 26 September 2026; the logs are in `logs/`. The tables they wrote agree with the tables from which the article was prepared to within 10⁻⁵ (relative), except where noted in `logs/VERIFICATION.md`.
+The logs in `logs/` are from the pre-rework verification run (26 September 2026).
+The rework replaced the custom EMMAX/BLINK/PLINK/REML engines with GEMMA, PLINK
+1.9 and R/sommer; the current verification results and the numerical differences
+are in `docs/REWORK.md`. The variance-component, prediction and pruning outputs
+still reproduce the deposit closely; the additive GWAS tables should be
+regenerated and re-checked.
 
 ## License
 

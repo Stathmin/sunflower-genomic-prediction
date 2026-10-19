@@ -1,140 +1,146 @@
-# -*- coding: utf-8 -*-
-"""
-Reproduce the recompute at n = 162.
-Computed from the plot-level raw data and merged data.
-"""
+"""Reproduce the n = 162 reconciliation of parental distance and hybrid yield."""
+from __future__ import annotations
 
-import sys
-from pathlib import Path as _PathBoot
-_p = _PathBoot(__file__).resolve().parent
-while _p != _p.parent and not (_p / "paths.py").exists():
-    _p = _p.parent
-if str(_p) not in sys.path:
-    sys.path.insert(0, str(_p))
-from paths import DEPOSIT, WORK, CALLING, OUT, INTERMEDIATE, MODELS, use_models, work, calling, en_table, en_ids, en_id, is_line_id
-use_models()
+import warnings
+
 import numpy as np
 import pandas as pd
+import statsmodels.formula.api as smf
 from scipy import stats
-import pathlib
 
-D = DEPOSIT
-# ---------- 1. hybrid means from plot-level raw data (162) ----------
-plot = en_table(pd.read_parquet(OUT / "hybrid_plot_level.parquet"))
-means162 = (plot.groupby(["mother", "father", "trait"])["value"].mean()
-            .unstack("trait").reset_index())
-print("hybrid means from plot-level data:", len(means162))
+from sunflower.genotypes import filter_panel, load_genotypes
+from sunflower.io import read_csv, read_parquet
+from sunflower.names import en_table
 
-# ---------- 2. summary table of delivered year means (159) ----------
-hm = en_table(pd.read_csv(OUT / "hybrid_year_means_as_delivered.csv"))
-key159 = set(zip(hm["mother_long"], hm["father"]))
-key162 = set(zip(means162["mother"], means162["father"]))
-print("in plot-level data but not in the summary:", sorted(key162 - key159))
-
-# ---------- 3. panel and genetic distance ----------
-z = np.load(D / "merged_genotypes.npz", allow_pickle=True)
-G = z["genotypes"].astype(float); G[G < 0] = np.nan
-def cn(c):
-    try: return int(str(c).replace("CM00", "").replace(".2", "")) - 7889
-    except Exception: return -1
-chrom = np.array([cn(c) for c in z["chrom"]]); samp = en_ids(z["samples"].astype(str))
-cr = np.mean(~np.isnan(G), 1); af = np.nanmean(G, 1) / 2; maf = np.minimum(af, 1 - af)
-keep = (chrom >= 1) & (chrom <= 17) & (cr >= 0.9) & (maf >= 0.05)   # the 82,889-SNP set of the 57 parents, as for GBLUP
-Gk = G[keep]; Gk = np.where(np.isnan(Gk), np.nanmean(Gk, 1, keepdims=True), Gk)
-print("distance panel:", Gk.shape[0], "SNP")
-MO = {"VK101A": "VK101", "VA761A": "VA761", "VK934A": "VK934"}
-idx = {s: i for i, s in enumerate(samp)}
-def dist(mother_long, father):
-    gm = np.round(Gk[:, idx[MO[mother_long]]]); gf = np.round(Gk[:, idx[father]])
-    return float(np.mean(np.abs(gm - gf) / 2))
-
-means162["dist"] = [dist(m, f) for m, f in zip(means162["mother"], means162["father"])]
-
-# ---------- 4. distance–seed-yield correlations ----------
-def corrs(df, label):
-    rows = []
-    x, y = df["dist"].values, df["seed_yield"].values
-    m = ~np.isnan(y)
-    r, p = stats.pearsonr(x[m], y[m])
-    rows.append(("ALL", int(m.sum()), r, p))
-    for mom in ["VK934A", "VK101A", "VA761A"]:
-        s = df[df["mother"] == mom]
-        xx, yy = s["dist"].values, s["seed_yield"].values
-        mm = ~np.isnan(yy)
-        rr, pp = stats.pearsonr(xx[mm], yy[mm])
-        rows.append((mom, int(mm.sum()), rr, pp))
-    print(f"\n--- distance x seed yield, {label} ---")
-    for g, n, r, p in rows:
-        print(f"  {g:8s} n={n:3d}  r={r:.4f}  p={p:.5f}   (rounded r={r:.3f}, p={p:.4f})")
-    return rows
-
-res162 = corrs(means162, "n = 162 (plot-level means)")
-sub159 = means162[[ (m, f) in key159 for m, f in zip(means162["mother"], means162["father"]) ]]
-res159 = corrs(sub159, "n = 159 (summary-table combinations only)")
-
-# for reconciliation with the old figure: on the summary-table values themselves
-hm2 = hm.copy()
-hm2["dist"] = [dist(m, f) for m, f in zip(hm2["mother_long"], hm2["father"])]
-hm2 = hm2.drop(columns=["mother"]).rename(columns={"mother_long": "mother"})
-res_hm = corrs(hm2, "n = 159, values from the delivered year-means table")
-
-# ---------- 5. Baker ratio ----------
-def baker(df, trait):
-    tab = df.pivot_table(index="father", columns="mother", values=trait)
-    g = np.nanmean(tab.values)
-    gf = np.nanmean(tab.values, 1) - g
-    gm = np.nanmean(tab.values, 0) - g
-    sca = tab.values - g - gf[:, None] - gm[None, :]
-    vg = np.nanvar(np.concatenate([gf, gm]))
-    vs = np.nanvar(sca.ravel())
-    return 2 * vg / (2 * vg + vs)
-
-# ---- dependence among hybrids: each paternal line enters three hybrids and each tester 54 (Section 2.6)
-import statsmodels.formula.api as smf, warnings
 warnings.filterwarnings("ignore")
-dd = means162.dropna(subset=["dist", "seed_yield"]).copy()
-dd["zd"] = (dd["dist"] - dd["dist"].mean()) / dd["dist"].std()
-mm_ = smf.mixedlm("seed_yield ~ zd + C(mother)", dd, groups=dd["father"]).fit(reml=True)
-print("\n--- distance x seed yield allowing for dependence among hybrids (162 hybrids) ---")
-print(f"  mixed model, tester fixed, paternal line random: slope per SD of distance = {mm_.params['zd']:+.4f} t/ha, "
-      f"SE {mm_.bse['zd']:.4f}, p = {mm_.pvalues['zd']:.2e}")
-fm_ = dd.groupby("father")[["dist", "seed_yield"]].mean()
-rf, pf = stats.pearsonr(fm_["dist"], fm_["seed_yield"])
-print(f"  paternal-line means over the three testers (n = {len(fm_)}, independent units): r = {rf:.3f}, p = {pf:.4f}")
-ols_ = smf.ols("seed_yield ~ zd + C(mother) + C(father)", dd).fit()
-print(f"  within paternal line and tester (fixed line and tester effects): slope = {ols_.params['zd']:+.4f}, p = {ols_.pvalues['zd']:.3f}")
+TESTER_MAP = {"VK101A": "VK101", "VA761A": "VA761", "VK934A": "VK934"}
 
-print("\n--- Baker ratio ---")
-TR = [("seed_yield", "seed_yield"), ("oil_content", "oil_content"), ("seed_weight_1000", "seed_weight_1000")]
-for name, hmcol in TR:
-    b162 = baker(means162, name)
-    b159 = baker(sub159, name)
-    bhm = baker(hm2, hmcol)
-    print(f"  {name:12s} 162={b162:.4f} ({b162:.2f})  159-subset={b159:.4f} ({b159:.2f})  "
-          f"summary-159={bhm:.4f} ({bhm:.2f})")
 
-# ---------- 6. which source the maternal GCA and paternal index were computed from ----------
-print("\n--- GCA source ---")
-gcaf = en_table(pd.read_csv(OUT / "gca_fathers_as_delivered.csv")).set_index("father")
-gcam = en_table(pd.read_csv(OUT / "gca_testers_as_delivered.csv"))
-def gca_from(df, trait, col_out):
-    tab = df.pivot_table(index="father", columns="mother", values=trait)
-    g = np.nanmean(tab.values)
-    return (pd.Series(np.nanmean(tab.values, 1) - g, index=tab.index),
-            pd.Series(np.nanmean(tab.values, 0) - g, index=tab.columns))
-for name, hmcol in [("seed_yield", "seed_yield"), ("oil_content", "oil_content"), ("seed_weight_1000", "seed_weight_1000")]:
-    f162, m162 = gca_from(means162, name, hmcol)
-    f159, m159 = gca_from(sub159, name, hmcol)
-    fhm, mhm = gca_from(hm2, hmcol, hmcol)
-    stored_f = gcaf[hmcol]
-    print(f"  {hmcol:16s} corr(stored, 162)={np.corrcoef(stored_f.reindex(f162.index), f162)[0,1]:.6f} "
-          f"| corr(stored, summary-159)={np.corrcoef(stored_f.reindex(fhm.index), fhm)[0,1]:.6f} "
-          f"| max|diff| vs 162 = {np.max(np.abs(stored_f.reindex(f162.index).values - f162.values)):.4f} "
-          f"| vs summary = {np.max(np.abs(stored_f.reindex(fhm.index).values - fhm.values)):.4f}")
-print("\n  maternal GCA, stored:")
-print(gcam[["mother_long", "seed_yield", "oil_content", "seed_weight_1000", "plant_height"]].to_string(index=False))
-for name, hmcol in [("seed_yield", "seed_yield"), ("oil_content", "oil_content"), ("seed_weight_1000", "seed_weight_1000")]:
-    _, m162 = gca_from(means162, name, hmcol)
-    _, mhm = gca_from(hm2, hmcol, hmcol)
-    print(f"  {hmcol:16s} 162: " + ", ".join(f"{k}={v:+.4f}" for k, v in m162.items()) +
-          " | summary-159: " + ", ".join(f"{k}={v:+.4f}" for k, v in mhm.items()))
+def main() -> None:
+    data = load_genotypes()
+    panel = filter_panel(data, call_rate=0.9, maf=0.05)
+    print(f"distance panel: {panel.n_markers:,} SNP")
+
+    plot = en_table(read_parquet("hybrid_plot_level.parquet"))
+    means162 = (
+        plot.groupby(["mother", "father", "trait"])["value"].mean()
+        .unstack("trait").reset_index()
+    )
+    print("hybrid means from plot-level data:", len(means162))
+
+    delivered = en_table(read_csv("hybrid_year_means_as_delivered.csv"))
+    key159 = set(zip(delivered["mother_long"], delivered["father"]))
+    key162 = set(zip(means162["mother"], means162["father"]))
+    print("in plot-level data but not in the summary:", sorted(key162 - key159))
+
+    index = {sample: i for i, sample in enumerate(panel.samples)}
+
+    def distance(mother_long: str, father: str) -> float:
+        mother = np.round(panel.dosage[:, index[TESTER_MAP[mother_long]]])
+        line = np.round(panel.dosage[:, index[father]])
+        return float(np.mean(np.abs(mother - line) / 2.0))
+
+    means162["dist"] = [distance(m, f) for m, f in zip(means162["mother"], means162["father"])]
+
+    def correlations(frame: pd.DataFrame, label: str):
+        rows = []
+        x, y = frame["dist"].to_numpy(), frame["seed_yield"].to_numpy()
+        mask = ~np.isnan(y)
+        rows.append(("ALL", int(mask.sum()), *stats.pearsonr(x[mask], y[mask])))
+        for mother in ["VK934A", "VK101A", "VA761A"]:
+            subset = frame[frame["mother"] == mother]
+            xx, yy = subset["dist"].to_numpy(), subset["seed_yield"].to_numpy()
+            keep = ~np.isnan(yy)
+            rows.append((mother, int(keep.sum()), *stats.pearsonr(xx[keep], yy[keep])))
+        print(f"\n--- distance x seed yield, {label} ---")
+        for group, n, r, p in rows:
+            print(f"  {group:8s} n={n:3d}  r={r:.4f}  p={p:.5f}")
+        return rows
+
+    sub159 = means162[
+        [(m, f) in key159 for m, f in zip(means162["mother"], means162["father"])]
+    ]
+    correlations(means162, "n = 162 (plot-level means)")
+    correlations(sub159, "n = 159 (summary-table combinations only)")
+
+    hm2 = delivered.copy()
+    hm2["dist"] = [distance(m, f) for m, f in zip(hm2["mother_long"], hm2["father"])]
+    hm2 = hm2.drop(columns=["mother"]).rename(columns={"mother_long": "mother"})
+    correlations(hm2, "n = 159, values from the delivered year-means table")
+
+    def baker(frame: pd.DataFrame, trait: str) -> float:
+        table = frame.pivot_table(index="father", columns="mother", values=trait)
+        values = table.values
+        grand = np.nanmean(values)
+        father = np.nanmean(values, axis=1) - grand
+        mother = np.nanmean(values, axis=0) - grand
+        sca = values - grand - father[:, None] - mother[None, :]
+        vg = np.nanvar(np.concatenate([father, mother]))
+        vs = np.nanvar(sca.ravel())
+        return float(2 * vg / (2 * vg + vs))
+
+    dependent = means162.dropna(subset=["dist", "seed_yield"]).copy()
+    dependent["zd"] = (dependent["dist"] - dependent["dist"].mean()) / dependent["dist"].std()
+    mixed = smf.mixedlm(
+        "seed_yield ~ zd + C(mother)", dependent, groups=dependent["father"]
+    ).fit(reml=True)
+    print("\n--- distance x seed yield allowing for dependence among hybrids (162 hybrids) ---")
+    print(
+        f"  mixed model, tester fixed, paternal line random: slope per SD = "
+        f"{mixed.params['zd']:+.4f} t/ha, SE {mixed.bse['zd']:.4f}, "
+        f"p = {mixed.pvalues['zd']:.2e}"
+    )
+    line_means = dependent.groupby("father")[["dist", "seed_yield"]].mean()
+    rf, pf = stats.pearsonr(line_means["dist"], line_means["seed_yield"])
+    print(
+        f"  paternal-line means over the three testers (n = {len(line_means)}): "
+        f"r = {rf:.3f}, p = {pf:.4f}"
+    )
+    ols = smf.ols("seed_yield ~ zd + C(mother) + C(father)", dependent).fit()
+    print(
+        f"  within paternal line and tester: slope = {ols.params['zd']:+.4f}, "
+        f"p = {ols.pvalues['zd']:.3f}"
+    )
+
+    print("\n--- Baker ratio ---")
+    for trait in ["seed_yield", "oil_content", "seed_weight_1000"]:
+        print(
+            f"  {trait:12s} 162={baker(means162, trait):.4f} "
+            f"159-subset={baker(sub159, trait):.4f} "
+            f"summary-159={baker(hm2, trait):.4f}"
+        )
+
+    print("\n--- GCA source ---")
+    stored_fathers = en_table(read_csv("gca_fathers_as_delivered.csv")).set_index("father")
+    stored_mothers = en_table(read_csv("gca_testers_as_delivered.csv"))
+
+    def gca_from(frame: pd.DataFrame, trait: str):
+        table = frame.pivot_table(index="father", columns="mother", values=trait)
+        grand = np.nanmean(table.values)
+        return (
+            pd.Series(np.nanmean(table.values, 1) - grand, index=table.index),
+            pd.Series(np.nanmean(table.values, 0) - grand, index=table.columns),
+        )
+
+    for trait in ["seed_yield", "oil_content", "seed_weight_1000"]:
+        father162, _ = gca_from(means162, trait)
+        fatherhm, _ = gca_from(hm2, trait)
+        stored = stored_fathers[trait]
+        print(
+            f"  {trait:16s} corr(stored, 162)="
+            f"{np.corrcoef(stored.reindex(father162.index), father162)[0, 1]:.6f} "
+            f"| corr(stored, summary-159)="
+            f"{np.corrcoef(stored.reindex(fatherhm.index), fatherhm)[0, 1]:.6f} "
+            f"| max|diff| vs 162="
+            f"{np.max(np.abs(stored.reindex(father162.index).to_numpy() - father162.to_numpy())):.4f}"
+        )
+    print("\n  maternal GCA, stored:")
+    print(
+        stored_mothers[
+            ["mother_long", "seed_yield", "oil_content", "seed_weight_1000", "plant_height"]
+        ].to_string(index=False)
+    )
+
+
+if __name__ == "__main__":
+    main()

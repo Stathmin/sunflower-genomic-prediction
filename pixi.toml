@@ -1,0 +1,12 @@
+[project]
+name = "sunflower-external"
+channels = ["conda-forge", "bioconda"]
+platforms = ["linux-64", "osx-64", "osx-arm64"]
+
+[dependencies]
+plink = ">=1.90"
+gemma = ">=0.98.5"
+r-base = ">=4.3"
+
+[tasks]
+install-r = "Rscript src/sunflower/r/install.R"

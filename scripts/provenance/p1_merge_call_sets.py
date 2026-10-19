@@ -16,19 +16,14 @@ Old files are not touched.
 """
 from __future__ import annotations
 
-import sys
-from pathlib import Path as _PathBoot
-_p = _PathBoot(__file__).resolve().parent
-while _p != _p.parent and not (_p / "paths.py").exists():
-    _p = _p.parent
-if str(_p) not in sys.path:
-    sys.path.insert(0, str(_p))
-from paths import DEPOSIT, WORK, CALLING, OUT, INTERMEDIATE, MODELS, use_models, work, calling, en_table, en_ids, en_id, is_line_id
-use_models()
 import gzip
-from pathlib import Path
-import numpy as np, allel
-ROOT = work()  # undeposited working tree
+
+import allel
+import numpy as np
+
+from sunflower.paths import en_ids, require_work
+
+ROOT = require_work()  # undeposited working tree
 NEW=ROOT/"6_новые данные_ответы + исходники +vcf"
 V1=NEW/"sunflower_var1_bam_merged_15_49.vcf"
 V2=NEW/"sunflower_var2_vcf_merged.vcf"
@@ -42,10 +37,7 @@ canon=[SEQ[s] for s in range(1,58)]
 
 def disc_consensus(reps):  # (n,nrep) -> (n,) discrete 0/1/2/-1, hom-priority on a tie
     out=np.full(reps.shape[0],-1,dtype=np.int8)
-    for code in (0,2,1):  # priority order: homozygotes, then het
-        pass
     # mode with hom priority: count votes
-    n=reps.shape[0]
     v0=(reps==0).sum(1);v1=(reps==1).sum(1);v2=(reps==2).sum(1)
     # pick the maximum; on a tie hom (0/2) outranks het(1)
     stack=np.stack([v0,v1,v2],axis=1) # cols: 0,1,2
@@ -71,10 +63,10 @@ def load_disc(path, is_var1):
             if nm=="LI15": disc[:,j]=c15
             elif nm=="LI51": disc[:,j]=c49
             else:
-                seq=[k for k,v in SEQ.items() if v==nm][0]; disc[:,j]=nalt[:,ci[f"{seq}.0"]]
+                seq=next(k for k,v in SEQ.items() if v==nm); disc[:,j]=nalt[:,ci[f"{seq}.0"]]
     else:
         for j,nm in enumerate(canon):
-            seq=[k for k,v in SEQ.items() if v==nm][0]
+            seq=next(k for k,v in SEQ.items() if v==nm)
             # var2 names are integers '1'..'57'
             key=str(seq)
             disc[:,j]=nalt[:,ci[key]] if key in ci else -1
@@ -143,7 +135,7 @@ merged=merged[order];mref=mref[order];malt=malt[order];mchrom=mchrom[order];mpos
 np.savez_compressed(OUT/"merged_genotypes.npz",
     genotypes=merged,chrom=mchrom.astype(str),pos=mpos,ref=mref.astype(str),alt=malt.astype(str),
     samples=np.array(canon))
-print(f"  saved merged_genotypes.npz",flush=True)
+print("  saved merged_genotypes.npz",flush=True)
 
 # write VCF.gz
 gtstr=np.array(["./.","0/0","0/1","1/1"])  # index = g+1

@@ -1,0 +1,8 @@
+name: sunflower-external
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - plink>=1.90
+  - gemma>=0.98.5
+  - r-base>=4.3

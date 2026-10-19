@@ -1,75 +1,60 @@
-# -*- coding: utf-8 -*-
-"""Hybrid BLUP phenotypes for height and diameter on the corrected
-plot-level table (162 combinations).
+"""Hybrid BLUP phenotypes for height and diameter, plus the published columns.
 
-The model is the same as for the three productivity traits in 221_parse_hybrid_reps.py:
-    value ~ C(year) + C(year):C(rep),  combination is a random effect, REML;
-    BLUP phenotype = grand mean + combination random effect.
-
-The published four columns (seed yield, oil content, 1000-seed weight, oil yield)
-are copied from hybrid_blup_phenotypes.csv without changes; two new ones are added.
-
-Input:  deposit hybrid_plot_level.parquet
-        deposit hybrid_blup_phenotypes.csv
-Output: hybrid_blup_phenotypes_with_biometry.csv
-        hybrid_blup_biometry.txt
+The model is the same as for the productivity traits:
+    value ~ C(year-plot), combination random, REML;
+    BLUP = grand mean + combination random effect.
 """
+from __future__ import annotations
 
-import sys
-from pathlib import Path as _PathBoot
-_p = _PathBoot(__file__).resolve().parent
-while _p != _p.parent and not (_p / "paths.py").exists():
-    _p = _p.parent
-if str(_p) not in sys.path:
-    sys.path.insert(0, str(_p))
-from paths import DEPOSIT, WORK, CALLING, OUT, INTERMEDIATE, MODELS, use_models, work, calling, en_table, en_ids, en_id, is_line_id
-use_models()
-from pathlib import Path
-import warnings, numpy as np, pandas as pd
-import statsmodels.formula.api as smf
-warnings.filterwarnings("ignore")
+import numpy as np
 
-PARQ = OUT / "hybrid_plot_level.parquet"
-OLD  = OUT / "hybrid_blup_phenotypes.csv"
-OUT_CSV = OUT / "hybrid_blup_phenotypes_with_biometry.csv"
-TXT  = OUT / "hybrid_blup_biometry.txt"
+from sunflower.io import read_csv, read_parquet, write_csv
+from sunflower.paths import TABLES
+from sunflower.prediction import hybrid_blups
 
-P = en_table(pd.read_parquet(PARQ))
-bl = en_table(pd.read_csv(OLD, encoding="utf-8-sig"))
-txt = ["Hybrid BLUP phenotypes: extension to height and diameter", ""]
-new = {}
-for trait in ["plant_height", "head_diameter", "seed_yield", "oil_content", "seed_weight_1000"]:
-    d = P[P["trait"] == trait].copy()
-    d["g"] = d["mother"] + "_" + d["father"]
-    # Year + Rep(Year) is encoded as ONE “year-plot” factor: the same linear
-    # span, but full rank. The literal C(year)+C(year):C(rep) is singular
-    # when the number of plots differs by year (2 in 2022, 3 in 2023) — the
-    # same singularity as previously observed in baker_v3.
-    d["yr_rep"] = d["year"].astype(str) + "_" + d["rep"].astype(str)
-    mf = smf.mixedlm("value ~ C(yr_rep)", d, groups=d["g"]).fit(reml=True)
-    s2g = float(mf.cov_re.iloc[0, 0]); s2e = float(mf.scale)
-    gm = d["value"].mean()
-    vals = {g: gm + float(v.iloc[0]) for g, v in mf.random_effects.items()}
-    r = len(d) / d["g"].nunique()
-    txt.append(f"{trait:14s} n={len(d):4d} combinations={d['g'].nunique():3d}  "
-               f"s2g={s2g:8.3f} s2e={s2e:8.3f}  repeatability={s2g/(s2g+s2e):.3f}  "
-               f"H2(mean)={s2g/(s2g+s2e/r):.3f}")
-    if trait in ("plant_height", "head_diameter"):
-        new[trait] = pd.Series(vals)
-    else:                                   # check: do they match the published columns
-        chk = bl.set_index("hybrid")[trait].reindex(pd.Series(vals).index)
-        dd = (chk - pd.Series(vals)).abs()
-        txt.append(f"{'':14s} check vs published column: max |Δ| = {dd.max():.4f} "
-                   f"(correlation {np.corrcoef(chk.dropna(), pd.Series(vals)[chk.dropna().index])[0,1]:.6f})")
+TRAITS = ["plant_height", "head_diameter", "seed_yield", "oil_content", "seed_weight_1000"]
 
-EXT = bl.set_index("hybrid").copy()
-for t, s in new.items():
-    EXT[t] = s
-EXT = EXT.reset_index()
-EXT.to_csv(OUT_CSV, index=False, encoding="utf-8-sig")
-txt += ["", f"written: {OUT.name}, {len(EXT)} hybrids × {EXT.shape[1]-1} traits",
-        f"columns: {', '.join(EXT.columns[1:])}",
-        f"non-missing in new columns: plant_height {EXT['plant_height'].notna().sum()}, "
-        f"head_diameter {EXT['head_diameter'].notna().sum()}"]
-TXT.write_text("\n".join(txt), encoding="utf-8")
-print("\n".join(txt))
+
+def main() -> None:
+    plot = read_parquet("hybrid_plot_level.parquet")
+    published = read_csv("hybrid_blup_phenotypes.csv")
+    new, stats = hybrid_blups(plot, TRAITS, return_stats=True)
+
+    lines = ["Hybrid BLUP phenotypes: extension to height and diameter", ""]
+    for trait in TRAITS:
+        s = stats[trait]
+        lines.append(
+            f"{trait:14s} n={s['n']:4d} combinations={s['combinations']:3d}  "
+            f"s2g={s['s2g']:8.3f} s2e={s['s2e']:8.3f}  "
+            f"repeatability={s['repeatability']:.3f}  H2(mean)={s['H2']:.3f}"
+        )
+        if trait not in ("plant_height", "head_diameter"):
+            check = published.set_index("hybrid")[trait].reindex(new["hybrid"])
+            values = new.set_index("hybrid")[trait]
+            delta = (check - values).abs()
+            corr = np.corrcoef(check.dropna(), values[check.dropna().index])[0, 1]
+            lines.append(
+                f"{'':14s} check vs published column: max |delta| = {delta.max():.4f} "
+                f"(correlation {corr:.6f})"
+            )
+
+    extended = published.set_index("hybrid").copy()
+    for trait in ("plant_height", "head_diameter"):
+        extended[trait] = new.set_index("hybrid")[trait]
+    extended = extended.reset_index()
+    write_csv(extended, "hybrid_blup_phenotypes_with_biometry.csv")
+
+    lines += [
+        "",
+        f"written: tables/hybrid_blup_phenotypes_with_biometry.csv, "
+        f"{len(extended)} hybrids x {extended.shape[1] - 1} traits",
+        f"columns: {', '.join(extended.columns[1:])}",
+        f"non-missing in new columns: plant_height {extended['plant_height'].notna().sum()}, "
+        f"head_diameter {extended['head_diameter'].notna().sum()}",
+    ]
+    (TABLES / "hybrid_blup_biometry.txt").write_text("\n".join(lines), encoding="utf-8")
+    print("\n".join(lines))
+
+
+if __name__ == "__main__":
+    main()

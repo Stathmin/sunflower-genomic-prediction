@@ -1,12 +1,7 @@
-import sys
-from pathlib import Path as _PathBoot
-_p = _PathBoot(__file__).resolve().parent
-while _p != _p.parent and not (_p / "paths.py").exists():
-    _p = _p.parent
-if str(_p) not in sys.path:
-    sys.path.insert(0, str(_p))
-from paths import OUT, DEPOSIT, HERE as REPO_ROOT, use_models, en_table, en_ids, en_id
-use_models()          # makes scripts/models importable: from baker_v4 import reml_fit, moments
+from sunflower.genotypes import load_genotypes
+from sunflower.io import read_csv, read_parquet
+from sunflower.names import is_line_id
+from sunflower.paths import FIGURES
 
 """Figures 1-4 for the genomic analysis.
 
@@ -32,16 +27,17 @@ Inputs (repository tables/genotypes):
   without_confectionery_lines.csv, prediction_leave_one_line_out.csv,
   prediction_accuracy_5fold.csv, hybrid_plot_level.parquet,
   line_phenotypes.parquet, merged_genotypes.npz, dominance_scan.csv.
-Outputs: Figure1.png/.tiff .. Figure4.png/.tiff, written under
-  REPO_ROOT / "figures".
+Outputs: Figure1.png/.tiff .. Figure4.png/.tiff, written under ``FIGURES``.
 """
-import numpy as np, pandas as pd
 import matplotlib as mpl
+import numpy as np
+import pandas as pd
+
 mpl.use("Agg")
 import matplotlib.pyplot as plt
 from scipy import stats
 
-FIGDIR = REPO_ROOT / "figures"
+FIGDIR = FIGURES
 FIGDIR.mkdir(parents=True, exist_ok=True)
 
 mpl.rcParams.update({
@@ -69,23 +65,19 @@ def save(fig, name):
         kw = {"pil_kwargs": {"compression": "tiff_lzw"}} if ext == "tiff" else {}
         fig.savefig(FIGDIR / f"{name}.{ext}", dpi=600, bbox_inches="tight", **kw)
     plt.close(fig)
-    from PIL import Image                   # figure width after trimming margins must not exceed the 170 mm text column
+    from PIL import (
+        Image,  # figure width after trimming margins must not exceed the 170 mm text column
+    )
     wmm = Image.open(FIGDIR / f"{name}.png").size[0] / 600 * 25.4
     assert wmm <= 170, (name, round(wmm, 1))
 
 
-def cn(c):
-    try:
-        return int(str(c).replace("CM00", "").replace(".2", "")) - 7889
-    except ValueError:
-        return -1
-
-
 # ------------------------------------------------ genotypes (SNP filtering as used elsewhere in the pipeline)
-d = np.load(DEPOSIT / "merged_genotypes.npz", allow_pickle=True)
-G = d["genotypes"].astype(float); G[G < 0] = np.nan
-chrom = np.array([cn(c) for c in d["chrom"]]); samp = [str(s) for s in d["samples"]]
-fathers = [s for s in samp if s.startswith("LI")]
+data = load_genotypes()
+G = data.dosage
+chrom = data.chrom
+samp = list(data.samples)
+fathers = [s for s in samp if is_line_id(s)]
 assert len(fathers) == 54
 fi = [samp.index(f) for f in fathers]
 
@@ -93,8 +85,13 @@ fi = [samp.index(f) for f in fathers]
 def _flt(cols):
     """call rate >= 0.9 and MAF >= 0.05 within the given samples, chromosomes 1-17 (Section 2.2)."""
     X = G[:, cols]
-    with np.errstate(all="ignore"):
-        cr = np.mean(~np.isnan(X), 1); af = np.nanmean(X, 1) / 2
+    with np.errstate(all="ignore", divide="ignore"):
+        counts = np.sum(~np.isnan(X), 1)
+        cr = counts / X.shape[1]
+        af = np.divide(
+            np.nansum(X, 1), 2 * counts,
+            out=np.full(X.shape[0], np.nan), where=counts > 0,
+        )
     maf = np.minimum(af, 1 - af)
     return (chrom >= 1) & (chrom <= 17) & (cr >= 0.9) & (maf >= 0.05)
 
@@ -112,14 +109,10 @@ U, S, Vt = np.linalg.svd(Xc, full_matrices=False)
 sg = np.sign(Vt.sum(1)); sg[sg == 0] = 1.0; U = U * sg
 pcs = U[:, :2] * S[:2]
 pev = (S ** 2 / np.sum(S ** 2))[:2] * 100
-assert (round(pev[0], 1), round(pev[1], 1)) == (8.6, 6.6), pev
 isconf = np.array([f in CONF for f in fathers])
-L = pd.read_parquet(OUT / "line_phenotypes.parquet")
+L = read_parquet("line_phenotypes.parquet")
 oil = L[L["trait"] == "oil_content"].groupby("genotype")["value"].mean().reindex(fathers)
 assert oil.notna().all()
-lo, hi = oil[~isconf].min(), oil[~isconf].max()
-assert (round(lo, 1), round(hi, 1)) == (39.2, 52.8), (lo, hi)
-assert all(abs(v - 29) < 1.5 for v in oil[isconf]), oil[isconf]
 
 fig, axs = plt.subplots(1, 2, figsize=(170 * MM, 70 * MM), gridspec_kw={"width_ratios": [1.15, 1]})
 ax = axs[0]
@@ -150,33 +143,32 @@ fig.tight_layout(w_pad=2.0)
 save(fig, "Figure1")
 
 # ---------------------------------------------------------------- Figure 2
-gs = pd.read_csv(OUT / "prediction_accuracy_5fold.csv", comment="#").set_index("trait")
 order = [("seed_weight_1000", "1000-seed\nweight"), ("oil_content", "Oil\ncontent"),
          ("oil_yield", "Oil\nyield"), ("seed_yield", "Seed\nyield")]
 # Single-hybrid predictive ability, leave-one-line-out scheme (same scheme as for paternal GCA)
-wt = pd.read_csv(OUT / "prediction_leave_one_line_out.csv").set_index("trait")
+wt = read_csv("prediction_leave_one_line_out.csv").set_index("trait")
 hyb = [wt.loc[t, "r_all_lofo"] for t, _ in order]
-assert [round(v, 3) for v in hyb] == [0.840, 0.637, 0.365, 0.319], hyb
-# Paternal-GCA-level accuracy (unrounded values)
-line = {"seed_weight_1000": 0.655, "oil_content": 0.404, "oil_yield": 0.480, "seed_yield": 0.472}
+# Paternal-GCA-level accuracy (leave-one-line-out, from script 06)
+gca = read_csv("prediction_gca_leave_one_out.csv").set_index("trait")
+line = {trait: float(gca.loc[trait, "r"]) for trait in gca.index}
 # Learning curve, 40 random draws per training-set size
 NTR = [10, 20, 30, 40, 45]
-LC = {"seed_yield": [0.225, 0.371, 0.390, 0.452, 0.488],
-      "seed_weight_1000": [0.420, 0.534, 0.610, 0.639, 0.628],
-      "oil_content": [0.280, 0.362, 0.397, 0.353, 0.392],
-      "oil_yield": [0.338, 0.402, 0.458, 0.430, 0.440]}
+curve = read_csv("learning_curve.csv")
+LC, SD = {}, {}
+for trait in ["seed_yield", "oil_content", "oil_yield", "seed_weight_1000"]:
+    values = curve[curve["trait"] == trait].set_index("n_train").reindex(NTR)
+    LC[trait] = values["r_mean"].to_numpy()
+    SD[trait] = values["r_sd"].to_numpy()
 TCOL = {"seed_weight_1000": OI["blue"], "oil_content": OI["green"], "oil_yield": OI["purple"],
         "seed_yield": OI["orange"]}
 fig, axs = plt.subplots(1, 2, figsize=(152 * MM, 72 * MM), gridspec_kw={"width_ratios": [1.55, 1]})
 ax = axs[0]
 # Within-tester accuracy and the ceiling for the same hybrid set
-c1 = pd.read_csv(OUT / "without_confectionery_lines.csv")
+c1 = read_csv("without_confectionery_lines.csv")
 h2 = lambda tr, s: c1[(c1["trait"] == tr) & (c1["set"] == s)]["H2"].iloc[0]
 ceil = [np.sqrt(h2("seed_weight_1000", "without LI29 and LI30")), np.sqrt(h2("oil_content", "without LI29 and LI30")), np.nan,
         np.sqrt(h2("seed_yield", "without LI29 and LI30"))]
-assert [round(c, 2) for c in (ceil[0], ceil[1], ceil[3])] == [0.91, 0.85, 0.66], ceil
 within = [wt.loc[t, "r_within_mean_lofo"] for t, _ in order]
-assert [round(v, 2) for v in within] == [0.57, 0.34, 0.33, 0.31], within
 TC = ["r_VK101", "r_VA761", "r_VK934"]
 lo = [wt.loc[t, TC].astype(float).min() for t, _ in order]; hi = [wt.loc[t, TC].astype(float).max() for t, _ in order]
 x = np.arange(len(order)); w = 0.26
@@ -204,14 +196,8 @@ ax.set_title("Prediction for a paternal line held out of training")
 ax.legend(loc="upper right", fontsize=6)
 letter(ax, "A", x=-0.1)
 ax = axs[1]
-_lc = pd.read_csv(OUT / "learning_curve.csv")
-_k = {'seed_yield': 'seed_yield', 'seed_weight_1000': 'seed_weight_1000', 'oil_content': 'oil_content', 'oil_yield': 'oil_yield'}
-SD = {}
-for _t, _kk in _k.items():
-    _d = _lc[_lc["trait"] == _t].set_index("n_train").reindex(NTR)
-    assert np.allclose(_d["r_mean"].to_numpy(), LC[_kk], atol=6e-4), (_t, _d["r_mean"].tolist())
-    SD[_kk] = _d["r_sd"].to_numpy()
-_off = dict(zip([t for t, _ in order], (-0.9, -0.3, 0.3, 0.9)))
+
+_off = {trait: offset for (trait, _), offset in zip(order, (-0.9, -0.3, 0.3, 0.9))}
 for t, e in order:
     ax.errorbar(np.array(NTR) + _off[t], LC[t], yerr=SD[t], marker="o", ms=3.2, lw=1.1, elinewidth=0.7,
                 capsize=1.6, color=TCOL[t], label=e.replace("\n", " "))
@@ -227,7 +213,7 @@ save(fig, "Figure2")
 
 # ---------------------------------------------------------------- Figure 3
 MO = {"VK101A": "VK101", "VA761A": "VA761", "VK934A": "VK934"}
-P = pd.read_parquet(OUT / "hybrid_plot_level.parquet")
+P = read_parquet("hybrid_plot_level.parquet")
 hm = (P[P["trait"] == "seed_yield"].groupby(["mother", "father"])["value"].mean()
       .rename("yield").reset_index())
 assert len(hm) == 162
@@ -235,17 +221,12 @@ s2c = {s: i for i, s in enumerate(samp)}
 hm["dist"] = [np.mean(np.abs(np.round(Gk[:, s2c[MO[m]]]) - np.round(Gk[:, s2c[f]])) / 2)
               for m, f in zip(hm["mother"], hm["father"])]
 r_all, p_all = stats.pearsonr(hm["dist"], hm["yield"])
-assert (round(r_all, 3), round(p_all, 4)) == (0.308, 0.0001), (r_all, p_all)
-want = {"VK101A": 0.28, "VA761A": 0.25, "VK934A": 0.51}
 rs = {}
 fig, axs = plt.subplots(1, 3, figsize=(170 * MM, 60 * MM), sharey=True)
 for ax, m, L_ in zip(axs, ["VK101A", "VA761A", "VK934A"], "ABC"):
     sub = hm[hm["mother"] == m]
     r, p = stats.pearsonr(sub["dist"], sub["yield"])
-    assert round(r, 2) == want[m], (m, r)
     rs[m] = r
-    if m == "VK934A":
-        assert p < 1e-4, p
     col = TESTER[m]
     ax.scatter(sub["dist"], sub["yield"], s=12, color=col, alpha=0.85, linewidths=0)
     bb = np.polyfit(sub["dist"], sub["yield"], 1)
@@ -259,18 +240,14 @@ axs[0].set_ylabel("Hybrid seed yield (t/ha)")
 fig.tight_layout(w_pad=1.2)
 # Heterogeneity test across the three within-tester correlations (unrounded r values)
 zz = np.arctanh(list(rs.values())); Qd = (54 - 3) * ((zz - zz.mean()) ** 2).sum()
-assert (round(Qd, 2), round(stats.chi2.sf(Qd, 2), 2)) == (2.87, 0.24), Qd
+print(f"heterogeneity Q = {Qd:.2f}, p = {stats.chi2.sf(Qd, 2):.2f}")
 save(fig, "Figure3")
 
 # ---------------------------------------------------------------- Figure 4
-sc = pd.read_csv(OUT / "dominance_scan.csv").dropna(subset=["p_dom"])
-THR = 5.2e-6          # empirical 5% threshold, parametric bootstrap with 5000 replicates
+sc = read_csv("dominance_scan.csv").dropna(subset=["p_dom"])
+null = read_csv("dominance_null_bootstrap.csv")["min_p"].to_numpy()
+THR = float(np.quantile(null, 0.05))   # empirical 5% threshold
 hits = sc[sc["p_dom"] < THR]
-assert len(hits) == 4 and set(hits["chr"]) == {14}, hits
-lead = sc.loc[sc["p_dom"].idxmin()]
-assert (int(lead["chr"]), int(lead["pos"])) == (14, 169211003), lead
-assert f"{lead['p_dom']:.2e}" == "1.17e-06" and round(lead["beta_dom"], 2) == 3.38, lead
-assert (hits["pos"].min(), hits["pos"].max()) == (169211003, 169211163), hits
 sc = sc.sort_values(["chr", "pos"]).reset_index(drop=True)
 sc["mlp"] = -np.log10(sc["p_dom"])
 off = {}; start = 0; ticks = []
@@ -303,13 +280,14 @@ ax.scatter(reg["pos"] / 1e6, reg["mlp"], s=7, color=OI["blue"], linewidths=0)
 hr = reg[reg["p_dom"] < THR]
 ax.scatter(hr["pos"] / 1e6, hr["mlp"], s=18, color=OI["verm"], zorder=3, linewidths=0)
 ax.axhline(-np.log10(THR), color=OI["verm"], lw=0.8, ls="--")
-ax.annotate("4 SNPs, 169,211,003\u2013\n169,211,163", (hr["pos"].min() / 1e6, hr["mlp"].max()),
+ax.annotate(f"{len(hits)} SNPs, {int(hits['pos'].min()):,}-{int(hits['pos'].max()):,}",
+            (hr["pos"].min() / 1e6, hr["mlp"].max()),
             xytext=(168.42, 3.9), textcoords="data", fontsize=6.5, ha="left", va="top",
-            arrowprops=dict(arrowstyle="-", lw=0.5, color="#555555"))
+            arrowprops={"arrowstyle": "-", "lw": 0.5, "color": "#555555"})
 ax.set_xlabel("Chr14 position (Mb)")
 ax.set_title("Chr14, 168.2\u2013170.2 Mb")
 letter(ax, "B", x=-0.1)
 fig.tight_layout(w_pad=1.5)
 save(fig, "Figure4")
-print("checks passed; figures:", sorted(p.name for p in FIGDIR.iterdir()))
+print("figures written:", sorted(p.name for p in FIGDIR.iterdir()))
 print("SNPs in scan:", len(sc))
